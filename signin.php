@@ -1,7 +1,7 @@
 <?php 
+    session_start();
     include 'config/config.php';
     include 'temp/header.php';
-    session_start();
 ?>
 
 <section class="auth-section">
@@ -21,20 +21,15 @@
                     <a href="forgot_password.php" class="forgot-password">Forgot Password?</a>
                 </div>
                 
-                <div class="form-group remember-me">
+                <div class="form-group">
                     <input type="checkbox" id="remember" name="remember">
                     <label for="remember">Remember me</label>
                 </div>
                 
-                <button type="submit" name="signin" class="btn btn-primary">Sign In</button>
+                <button type="submit" name="signin" class="btn btn-primary btn-center">Sign In</button>
                 
                 <div class="auth-footer">
                     <p>Don't have an account? <a href="signup">Register here</a></p>
-                    <p>or sign in with:</p>
-                    <div class="social-login">
-                        <a href="#" class="social-btn google"><i class="fab fa-google"></i> Google</a>
-                        <a href="#" class="social-btn facebook"><i class="fab fa-facebook-f"></i> Facebook</a>
-                    </div>
                 </div>
             </form>
 
@@ -58,7 +53,9 @@
                             $_SESSION['email'] = $user['email'];
                             $_SESSION['role'] = $user['status'];
 
-                            echo "<script>alert('Login successful'); window.location.href='lisiting';</script>";
+                            session_write_close();
+
+                            echo "<script>alert('Login successful'); window.location.href='index';</script>";
                             exit();
                         } else {
                             echo "<script>alert('Incorrect password'); window.location.href='signin.php';</script>";

@@ -1,10 +1,15 @@
 <?php
-// Start the session
 session_start();
 
-// If the user is not logged in, redirect to login page
-if (!isset($_SESSION['user_id'])) {
-    header("Location: signin.php");
-    exit();
+if (isset($_SESSION['user_id'])) {
+    echo $_SESSION['user_id'];
+} else {
+    echo "Not logged in";
 }
+
+// If you want to restrict access:
+//if (!isset($_SESSION['user_id'])) {
+    //header("Location: ../signin.php");
+    //exit();
+//}
 ?>

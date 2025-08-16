@@ -1,71 +1,99 @@
-<footer class="site-footer">
-    <div class="footer-main">
-        <div class="container">
-            <div class="footer-grid">
-                <!-- Company Info -->
-                <div class="footer-col">
-                    <img src="<?= base_url() ?>assets/img/indusss_logo.png" alt="Indus Services" class="footer-logo">
-                    <p class="footer-about">Providing premium home and maintenance solutions with professionalism and care across UAE.</p>
-                    <div class="footer-social">
-                        <a href="https://www.facebook.com/Indusservices.ae/" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://www.instagram.com/indusservices.ae/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.linkedin.com/in/indusservices/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
 
-                <!-- Quick Links -->
-                <div class="footer-col">
-                    <h3 class="footer-title">Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="<?= base_url() ?>#home">Home</a></li>
-                        <li><a href="<?= base_url() ?>#services">Services</a></li>
-                        <li><a href="<?= base_url() ?>#about">About Us</a></li>
-                        <li><a href="<?= base_url() ?>#contact">Contact</a></li>
-                        <li><a href="<?= base_url() ?>login">Login</a></li>
-                        <li><a href="<?= base_url() ?>register">Register</a></li>
-                    </ul>
-                </div>
+  <footer id="footer" class="footer position-relative light-background">
 
-                <!-- Services -->
-                <div class="footer-col">
-                    <h3 class="footer-title">Services</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Cleaning & Pest Control</a></li>
-                        <li><a href="#">Home Upgrade</a></li>
-                        <li><a href="#">Maintenance</a></li>
-                        <li><a href="#">Moving & Storage</a></li>
-                        <li><a href="#">AC Services</a></li>
-                        <li><a href="#">Plumbing</a></li>
-                    </ul>
-                </div>
-
-                <!-- Contact Info -->
-                <div class="footer-col">
-                    <h3 class="footer-title">Contact Us</h3>
-                    <ul class="footer-contact">
-                        <li><i class="fas fa-map-marker-alt"></i> Abu Dhabi Island, Musaffah Industrial, Abu Dhabi, UAE</li>
-                        <li><i class="fas fa-phone"></i> <a href="tel:+97125584651">02-558-4651</a></li>
-                        <li><i class="fas fa-envelope"></i> <a href="mailto:info@indusservices.com">info@indusservices.com</a></li>
-                        <li><i class="fas fa-clock"></i> Mon-Sun: 8:00 AM - 10:00 PM</li>
-                    </ul>
-                </div>
-            </div>
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="<?= base_url()?>" class=" d-flex align-items-center">
+            <img src="<?= base_url()?>assets/img/logoi.png" width="100px" height="50px">
+          </a>
+          <div class="footer-contact pt-3">
+            <p>Find Our Pro's For Any Home Services</p>
+            <p>Abu Dhabi Island, Musaffah Industrial, Abu Dhabi, UAE</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>02 558 4651</span></p>
+            <p><strong>Email:</strong> <span>info@indusservices.ae</span></p>
+          </div>
+          <div class="social-links d-flex mt-4">
+            <a href=""><i class="bi bi-twitter-x"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-linkedin"></i></a>
+          </div>
         </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Terms of service</a></li>
+            <li><a href="#">Privacy policy</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="#">Pest Control</a></li>
+            <li><a href="#">Maid Service(Hourly)</a></li>
+            <li><a href="#">Deep Cleaning</a></li>
+            <li><a href="#">Sofa Cleaning</a></li>
+            <li><a href="#">Carpet Cleaning</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Home Upgrade</h4>
+          <ul>
+            <li><a href="#">Carpentry</a></li>
+            <li><a href="#">Handyman</a></li>
+            <li><a href="#">Electrical</a></li>
+            <li><a href="#">Plumbing</a></li>
+            <li><a href="#">Painting</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Maintenance</h4>
+          <ul>
+            <li><a href="#">AC Maintenance & cleaning</a></li>
+            <li><a href="#">Appliance Repair & installation</a></li>
+            <li><a href="#">Remodelling and maintenance</a></li>
+            <li><a href="#">Garden Maintenance</a></li>
+             <li><a href="#">Movers and Packers</a></li> 
+             <li><a href="#">One Item Move</a></li>
+             <li><a href="#">Storage(Temperature control)</a></li>
+             <li><a href="#">Junk Removal</a></li>
+            
+          </ul>
+        </div>
+
+      </div>
     </div>
 
-    <div class="footer-bottom">
-        <div class="container">
-            <div class="footer-bottom-content">
-                <p>&copy; <?= date('Y') ?> Indus Services. All rights reserved.</p>
-                <div class="footer-legal">
-                    <a href="<?= base_url() ?>privacy">Privacy Policy</a>
-                    <a href="<?= base_url() ?>terms">Terms of Service</a>
-                    <a href="<?= base_url() ?>sitemap.xml">Sitemap</a>
-                </div>
-            </div>
-        </div>
+     <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Indus Service</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">
+        
+        Designed by <a href="">NEXS DIGITAL MARKETING AGENCY</a>
+      </div>
     </div>
-</footer>
 
-<!-- Back to Top Button -->
-<button id="back-to-top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="<?= base_url()?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="<?= base_url()?>assets/vendor/php-email-form/validate.js"></script>
+  <script src="<?= base_url()?>assets/vendor/aos/aos.js"></script>
+  <script src="<?= base_url()?>assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="<?= base_url()?>assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="<?= base_url()?>assets/js/main.js"></script>
+
+</body>
+</html>
