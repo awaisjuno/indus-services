@@ -1,191 +1,185 @@
 <?php
-session_start();
-include '../config/config.php';
-include 'temp.php';
 
-// ===== Handle Export =====
-if (isset($_POST['action']) && $_POST['action'] === 'export' && !empty($_POST['selected_orders'])) {
-    $selectedOrders = array_map('intval', $_POST['selected_orders']);
-    $ids = implode(',', $selectedOrders);
-
-    $sqlExport = "
-        SELECT 
-            o.order_id,
-            u.email AS customer_email,
-            sc.sub_category AS service_name,
-            o.date,
-            rl.rate AS amount,
-            o.status
-        FROM `order` o
-        JOIN user u ON o.user_id = u.user_id
-        JOIN sub_category sc ON o.sub_id = sc.sub_id
-        LEFT JOIN rate_list rl ON o.rate_list_id = rl.rate_id
-        WHERE o.is_delete = '0' AND o.order_id IN ($ids)
-        ORDER BY o.order_id DESC
-    ";
-    $resultExport = mysqli_query($con, $sqlExport);
-
-    header('Content-Type: text/csv');
-    header('Content-Disposition: attachment; filename="selected_orders.csv"');
-
-    $output = fopen('php://output', 'w');
-    fputcsv($output, ['Order ID', 'Customer Email', 'Service', 'Date', 'Amount', 'Status']);
-
-    while ($row = mysqli_fetch_assoc($resultExport)) {
-        fputcsv($output, [
-            $row['order_id'],
-            $row['customer_email'],
-            $row['service_name'],
-            date('d-M-Y', strtotime($row['date'])),
-            $row['amount'],
-            $row['status']
-        ]);
-    }
-    fclose($output);
-    exit;
-}
-
-// ===== Queries for Two Panels =====
-$newOrders = mysqli_query($con, "
-    SELECT 
-        o.order_id,
-        u.email AS customer_email,
-        sc.sub_category AS service_name,
-        o.date,
-        rl.rate AS amount,
-        o.status
-    FROM `order` o
-    JOIN user u ON o.user_id = u.user_id
-    JOIN sub_category sc ON o.sub_id = sc.sub_id
-    LEFT JOIN rate_list rl ON o.rate_list_id = rl.rate_id
-    WHERE o.is_delete = '0' AND o.status = 0
-    ORDER BY o.order_id DESC
-");
-
-$doneOrders = mysqli_query($con, "
-    SELECT 
-        o.order_id,
-        u.email AS customer_email,
-        sc.sub_category AS service_name,
-        o.date,
-        rl.rate AS amount,
-        o.status
-    FROM `order` o
-    JOIN user u ON o.user_id = u.user_id
-    JOIN sub_category sc ON o.sub_id = sc.sub_id
-    LEFT JOIN rate_list rl ON o.rate_list_id = rl.rate_id
-    WHERE o.is_delete = '0' AND o.status = 1
-    ORDER BY o.order_id DESC
-");
+    session_start();
+    include '../config/config.php';
+    include '../config/session.php';
+    include 'temp.php';    
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Management</title>
-    <link rel="stylesheet" href="<?= base_url() ?>assets/css/admin.css">
-</head>
-<body>
-<div class="main-content">
-    <div class="header">
-        <h1>Order Management</h1>
-        <div class="user-info">
-            <img src="<?= base_url() ?>assets/img/user.png" alt="User">
-            <span><?= $_SESSION['email'] ?? 'Admin User' ?></span>
+
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1>Order Management </h1>
+                </div>
+                
+                <div class="header-right">
+                    <div class="user-profile">
+                        <img src="<?= base_url()?>assets/img/<?= $row['img']?>" alt="Admin User">
+                        <div class="user-info">
+                            <h4><?= $row['first_name']?> <?= $row['last_name']?></h4>
+                            <p>Administrator</p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+
+    <div class="content">
+
+        <div class="panel panel-default">
+
+            <div class="panel-heading">
+                <h3><i class="fa-solid fa-filter"></i> Refine By</h3>
+            </div>
+
+            <div class="panel-body">
+
+                <form method="POST">
+
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <?= form_label('Order Status *')?>
+                            <select name="status" class="form-control" required>
+                                <option value="canceled">Canceled</option>
+                                <option value="unconfirmed">Un Confirmed</option>
+                                <option value="completed">Completed</option>
+                                <option value="not-serviced">Not Serviced</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-12">
+                            <?= form_label('Service Location *') ?>
+                            <?= form_input(array('type' => 'text', 'name' => 'service_location', 'class' => 'form-control')) ?>
+                        </div>
+
+                        <div class="form-group col-6">
+                            <?= form_label('Starting Date *')?>
+                            <?= form_input(array('type' => 'date', 'name' => 'start_date', 'class' => 'form-control'))?>
+                        </div>
+                    
+                        <div class="form-group col-6">
+                            <?= form_label('Ending Date *')?>
+                            <?= form_input(array('type' => 'date', 'name' => 'end_date', 'class' => 'form-control'))?>
+                        </div>
+                    </div>
+
+                    <button name="submit" class="btn">Search</button>
+
+                </form>
+
+                <?php
+                
+                    if(isset($_POST['submit'])) {
+
+                        $status = $_POST['status'];
+                        $service_location = $_POST['service_location'];
+                        $issues = $_POST['issues'];
+                        $start_date = $_POST['start_date'];
+                        $end_date = $_POST['end_date'];
+
+                        // Redirect with GET params
+                        echo "<script>
+                            window.location.href = 'filters.php?status=$status&service_location=$service_location&issues=$issues&start_date=$start_date&end_date=$end_date';
+                        </script>";
+                        exit;
+
+                    }
+                
+                ?>
+
+            </div>
+
         </div>
-    </div>
 
-    <!-- ===== New Orders Panel ===== -->
-    <div class="content-section">
-        <h2>New Orders</h2>
-        <form method="post">
-            <table cellpadding="8" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th><input type="checkbox" id="select-all-new"></th>
-                        <th>Order ID</th>
-                        <th>Customer Email</th>
-                        <th>Service</th>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Update Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (mysqli_num_rows($newOrders) > 0): ?>
-                        <?php while($row = mysqli_fetch_assoc($newOrders)): ?>
-                            <tr>
-                                <td><input type="checkbox" name="selected_orders[]" value="<?= $row['order_id'] ?>"></td>
-                                <td>#<?= $row['order_id'] ?></td>
-                                <td><?= htmlspecialchars($row['customer_email']) ?></td>
-                                <td><?= htmlspecialchars($row['service_name']) ?></td>
-                                <td><?= date('d M Y', strtotime($row['date'])) ?></td>
-                                <td><?= number_format($row['amount'], 2) ?></td>
-                                <td><span>Pending</span></td>
-                                <td><a href="<?= base_url()?>admin/update_order.php?order_id=<?= $row['order_id']?>">Done</a></td>
-                            </tr>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <tr><td colspan="8">No new orders</td></tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-            <div style="margin-top: 20px;">
-                <button type="submit" name="action" value="export" class="btn btn-success">Export New Orders</button>
+        <!--Pending Orders--->
+        <div class="panel panel-default">
+
+            <div class="panel-heading">
+                <h3><i class="fa fa-clock-o"></i> Pending Orders</h3>
             </div>
-        </form>
-    </div>
 
-    <!-- ===== Done Orders Panel ===== -->
-    <div class="content-section">
-        <h2>Done Orders</h2>
-        <form method="post">
-            <table cellpadding="8" cellspacing="0">
-                <thead>
+            <div class="panel-body">
+
+                <table class="table">
                     <tr>
-                        <th><input type="checkbox" id="select-all-done"></th>
-                        <th>Order ID</th>
-                        <th>Customer Email</th>
-                        <th>Service</th>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Status</th>
+                        <th>Order Date</th>
+                        <th>Order ID / Service Details</th>
+                        <th>Appointment Time</th>
+                        <th>Customer</th>
+                        <th>ST</th> 
+                        <th>Technician</th>
+                        <th>Action</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php if (mysqli_num_rows($doneOrders) > 0): ?>
-                        <?php while($row = mysqli_fetch_assoc($doneOrders)): ?>
-                            <tr>
-                                <td><input type="checkbox" name="selected_orders[]" value="<?= $row['order_id'] ?>"></td>
-                                <td>#<?= $row['order_id'] ?></td>
-                                <td><?= htmlspecialchars($row['customer_email']) ?></td>
-                                <td><?= htmlspecialchars($row['service_name']) ?></td>
-                                <td><?= date('d M Y', strtotime($row['date'])) ?></td>
-                                <td><?= number_format($row['amount'], 2) ?></td>
-                                <td><span>Done</span></td>
-                            </tr>
-                        <?php endwhile; ?>
-                    <?php else: ?>
-                        <tr><td colspan="7">No done orders</td></tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-            <div style="margin-top: 20px;">
-                <button type="submit" name="action" value="export" class="btn btn-success">Export Done Orders</button>
-            </div>
-        </form>
-    </div>
-</div>
 
-<script>
-document.getElementById('select-all-new').addEventListener('change', function() {
-    document.querySelectorAll('input[name="selected_orders[]"]').forEach(cb => cb.checked = this.checked);
-});
-document.getElementById('select-all-done').addEventListener('change', function() {
-    document.querySelectorAll('input[name="selected_orders[]"]').forEach(cb => cb.checked = this.checked);
-});
-</script>
-</body>
-</html>
+<?php 
+$pending = "
+    SELECT 
+        o.order_id, o.code, o.selected_date, o.selected_time, o.additional, o.status,
+        c.first_name AS customer_first, c.last_name AS customer_last, c.mobile AS customer_mobile,
+        oa.user_id AS assigned_user_id,
+        t.first_name AS tech_first, t.last_name AS tech_last,
+        s.*
+    FROM `order` o
+    LEFT JOIN user_detail c ON o.user_id = c.user_id
+    LEFT JOIN order_assign oa ON o.order_id = oa.order_id
+    LEFT JOIN user_detail t ON oa.user_id = t.user_id
+    LEFT JOIN sub_category s ON o.sub_id = s.sub_id
+    WHERE o.status = 0
+";
+
+
+$run = mysqli_query($con, $pending);
+
+while ($row = mysqli_fetch_assoc($run)) {
+    echo "<tr>
+        <td>". htmlspecialchars($row['selected_date']) ."</td>
+        <td>
+            Order #". $row['order_id'] ." (". htmlspecialchars($row['code']) .")<br>
+            <small>". htmlspecialchars($row['sub_category']) ."</small>
+        </td>
+        <td>". htmlspecialchars($row['selected_time']) ."</td>
+        <td>". htmlspecialchars($row['customer_first'].' '.$row['customer_last']) ."</td>
+        <td>". htmlspecialchars($row['additional']) ."</td>
+        <td>";
+
+    if (!empty($row['assigned_user_id'])) {
+        echo htmlspecialchars($row['tech_first'].' '.$row['tech_last']);
+    } else {
+        echo "<a href='assgin_order.php?order_id=". $row['order_id'] ."' class='btn btn-assign'>Assign To</a>";
+    }
+
+    echo "</td>
+        <td>
+            <a href='order_details.php?order_id=". $row['order_id'] ."' class='btn btn-details'>Order Details</a>
+        </td>
+    </tr>";
+}
+?>
+
+
+
+                </table>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+    // Validation for date range
+    document.querySelector("form").addEventListener("submit", function(e) {
+        let startDate = document.querySelector("[name='start_date']").value;
+        let endDate   = document.querySelector("[name='end_date']").value;
+        if ((startDate && !endDate) || (!startDate && endDate)) {
+            e.preventDefault();
+            alert("Please select both Starting Date and Ending Date together.");
+        }
+    });
+    </script>

@@ -1,41 +1,72 @@
 <?php
-include 'config/config.php';
-include 'temp/header.php';
 
-$slug = mysqli_real_escape_string($con, $_GET['slug']);
-$subCategoryName = ucwords(str_replace('-', ' ', $slug));
+  session_start();
+  include 'config/config.php';
+  include 'temp/header.php';
 
-$sel = "SELECT * FROM sub_category WHERE sub_category='$subCategoryName'";
-$run = mysqli_query($con, $sel);
+  // Get slug from URL
+  $slug = $_GET['slug'] ?? null;
 
-$row = mysqli_fetch_assoc($run);
+  $slug = mysqli_real_escape_string($con, $_GET['slug']);
+  $subCategoryName = str_replace('-', ' ', $slug);
+  $subCategoryName = ucwords($subCategoryName);
+
+  $sel = "SELECT * FROM sub_category 
+          WHERE LOWER(sub_category) = LOWER('$subCategoryName')";
+
+  $run = mysqli_query($con, $sel);
+
+  $row = mysqli_fetch_assoc($run);
 
 ?>
 
+
+
 <!-- Hero Section -->
-<section class="services-hero py-5" style="background: linear-gradient(135deg, #fff9e6 0%, #fff0cc 100%);">
+<section class="services-hero py-5">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-6">
-        <h1 class="display-4 fw-bold mb-4" style="color: #fdc411;"><?= $row['sub_category']?></h1>
+        <h1 class="display-4 fw-bold mb-4 hero-title"><?= $row['sub_category']?></h1>
         <p class="lead mb-4"><?= $row['description']?></p>
-        <div class="d-flex gap-3">
-          <a href="<?= base_url()?>options/<?= $row['sub_category']?>" class="btn btn-primary btn-lg px-4" style="width: 150px; background-color: #fdc411; border-color: #fdc411; color: #000;">Our Services</a>
+        <div class="row g-3">
+            <?php 
+                $cat = strtolower(str_replace(' ', '-', $row['sub_category']));
+                
+                // Check service type and show appropriate button
+                if ($row['service_type'] == 'quotation') {
+                    // Show only "Get Customized Quotes" button for quotation services
+                    echo '
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <a href="'.base_url().'options/price/'.$cat.'" class="btn w-100 book-service-btn">Book Service</a>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <a href="'.base_url().'options/quotation/'.$cat.'" class="btn w-100 customized-quotes-btn">
+                            Get Customized Quotes
+                        </a>
+                    </div>';
+                } else {
+                    // Show both buttons for regular services
+                    echo '<div class="col-lg-6 col-md-6 col-sm-6">
+                        <a href="'.base_url().'options/hourly/'.$cat.'" class="btn w-100 book-service-btn">Book Service</a>
+                    </div>';
+                }
+            ?>
         </div>
       </div>
       <div class="col-lg-6">
-        <img src="<?= base_url()?>assets/services/<?= $row['img']?>" alt="Professional cleaning team" class="img-fluid rounded-3 shadow-lg" style="max-height: 400px; width: 100%; object-fit: cover;">
+        <img src="<?= base_url()?>assets/services/<?= $row['img']?>" alt="Professional cleaning team" class="img-fluid rounded-3 shadow-lg hero-image">
       </div>
     </div>
   </div>
 </section>
 
 <!-- 5/5 Rating Section -->
-<section class="py-5" style="background-color: #fffdf5; padding-top: 80px !important;">
+<section class="py-5 rating-section">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-4 text-center mb-4 mb-lg-0">
-        <div class="display-3 fw-bold" style="color: #fdc411;">5.0</div>
+        <div class="display-3 fw-bold rating-number">5.0</div>
         <div class="text-warning mb-2">
           <i class="bi bi-star-fill fs-3"></i>
           <i class="bi bi-star-fill fs-3"></i>
@@ -107,9 +138,9 @@ $row = mysqli_fetch_assoc($run);
 <section id="services" class="py-5">
   <div class="container">
     <div class="text-center mb-5">
-      <span class="fw-bold" style="color: #fdc411;">OUR SERVICES</span>
+      <span class="fw-bold services-subtitle">OUR SERVICES</span>
       <h2 class="display-5 fw-bold mb-3">Our Other Services</h2>
-      <p class="lead text-muted mx-auto" style="max-width: 700px;">Discover our complete range of professional home services tailored for Abu Dhabi residents.</p>
+      <p class="lead text-muted mx-auto services-description">Discover our complete range of professional home services tailored for Abu Dhabi residents.</p>
     </div>
 
     <div class="row g-4">
@@ -128,13 +159,13 @@ $row = mysqli_fetch_assoc($run);
           echo '
           <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
             <div class="card h-100 border-0 shadow-sm hover-shadow transition-all overflow-hidden">
-              <div class="service-image-container" style="height: 200px; overflow: hidden;">
-                <img src="'.$image.'" alt="'.htmlspecialchars($row['sub_category']).'" class="img-fluid w-100 h-100" style="object-fit: cover;">
+              <div class="service-image-container">
+                <img src="'.$image.'" alt="'.htmlspecialchars($row['sub_category']).'" class="img-fluid w-100 h-100 service-image">
               </div>
               <div class="card-body p-4 text-center">
                 <h3 class="h4 mb-3">' . htmlspecialchars($row['sub_category']) . '</h3>
                 <p class="text-muted mb-4">' . htmlspecialchars($row['description']) . '</p>
-                <a href="' . base_url() . 'service/' . htmlspecialchars($slug) . '" class="btn btn-primary stretched-link" style="background-color: #fdc411; border-color: #fdc411; color: #000;">View Details</a>
+                <a href="' . base_url() . 'service/' . htmlspecialchars($slug) . '" class="btn btn-primary stretched-link service-details-btn">View Details</a>
               </div>
             </div>
           </div>';
@@ -143,14 +174,14 @@ $row = mysqli_fetch_assoc($run);
     </div>
 
     <!-- CTA Section -->
-    <div class="rounded-3 p-5 mt-5 text-white" style="background-color: #fdc411;">
+    <div class="rounded-3 p-5 mt-5 text-white cta-section">
       <div class="row align-items-center">
         <div class="col-lg-8">
           <h3 class="h2 mb-3">Ready to experience premium home services?</h3>
           <p class="mb-0">Book your service today and get 15% off your first cleaning!</p>
         </div>
         <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
-          <a href="contact.php" class="btn btn-dark btn-lg px-4" style="background: #000; color: #fff;">Book Now</a>
+          <a href="contact.php" class="btn btn-dark btn-lg px-4 cta-button">Book Now</a>
         </div>
       </div>
     </div>
@@ -158,10 +189,10 @@ $row = mysqli_fetch_assoc($run);
 </section>
 
 <!-- Testimonials -->
-<section class="py-5 bg-light" style="padding-top: 80px !important;">
+<section class="py-5 bg-light testimonials-section">
   <div class="container">
     <div class="text-center mb-5">
-      <span class="fw-bold" style="color: #fdc411;">CLIENT FEEDBACK</span>
+      <span class="fw-bold testimonials-subtitle">CLIENT FEEDBACK</span>
       <h2 class="display-5 fw-bold mb-3">What Our Clients Say</h2>
     </div>
     
@@ -241,11 +272,61 @@ $row = mysqli_fetch_assoc($run);
   </div>
 </section>
 
-<?php include 'temp/footer.php'; ?>
-
 <style>
+/* General Styles */
 .services-hero {
   padding: 5rem 0;
+  background: linear-gradient(135deg, #fff9e6 0%, #fff0cc 100%);
+}
+
+.hero-title {
+  color: #fdc411;
+}
+
+.hero-image {
+  max-height: 400px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.rating-section {
+  background-color: #fffdf5;
+  padding-top: 80px !important;
+}
+
+.rating-number {
+  color: #fdc411;
+}
+
+.rating-card {
+  transition: all 0.3s ease;
+}
+
+.rating-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(253, 196, 17, 0.2) !important;
+}
+
+.services-subtitle {
+  color: #fdc411;
+}
+
+.services-description {
+  max-width: 700px;
+}
+
+.service-image-container {
+  height: 200px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.service-image {
+  object-fit: cover;
+}
+
+.card:hover .service-image-container {
+  transform: scale(1.05);
 }
 
 .hover-shadow {
@@ -267,31 +348,118 @@ $row = mysqli_fetch_assoc($run);
   content: "";
 }
 
-.btn-outline-primary:hover {
+.service-details-btn {
   background-color: #fdc411;
-  color: white !important;
-}
-
-.rating-card {
+  border-color: #fdc411;
+  color: #000;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
   transition: all 0.3s ease;
 }
 
-.rating-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(253, 196, 17, 0.2) !important;
+.service-details-btn:hover {
+  background-color: #e6b00f;
+  border-color: #e6b00f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(253, 196, 17, 0.3);
 }
 
-.service-image-container {
+.cta-section {
+  background-color: #fdc411;
+}
+
+.cta-button {
+  background: #000;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
   transition: all 0.3s ease;
 }
 
-.card:hover .service-image-container {
-  transform: scale(1.05);
+.cta-button:hover {
+  background: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Added spacing for testimonials */
-.testimonials-spacing {
-  margin-top: 80px;
+.testimonials-section {
+  padding-top: 80px !important;
+}
+
+.testimonials-subtitle {
+  color: #fdc411;
+}
+
+/* Button Styles */
+.book-service-btn {
+  background-color: #fdc411;
+  border-color: #fdc411;
+  color: #000;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-align: center;
+  border: 1px solid transparent;
+}
+
+.book-service-btn:hover {
+  background-color: #e6b00f;
+  border-color: #e6b00f;
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(253, 196, 17, 0.3);
+  text-decoration: none;
+}
+
+.customized-quotes-btn {
+  background-color: #343a40;
+  border-color: #343a40;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-align: center;
+  border: 1px solid transparent;
+}
+
+.customized-quotes-btn:hover {
+  background-color: #23272b;
+  border-color: #1d2124;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  text-decoration: none;
+}
+
+/* Center single button for quotation services */
+.services-hero .row.g-3 .col-lg-6:only-child {
+  margin: 0 auto;
+  float: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .services-hero .row.g-3 {
+    margin-left: -0.5rem;
+    margin-right: -0.5rem;
+  }
+  
+  .services-hero .col-lg-6 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  
+  /* Center single button on mobile */
+  .services-hero .row.g-3 .col-lg-6:only-child {
+    width: 100%;
+    max-width: 300px;
+  }
 }
 </style>
 
@@ -307,3 +475,5 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+
+<?php include 'temp/footer.php'; ?>

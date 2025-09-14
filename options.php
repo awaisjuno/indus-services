@@ -1,469 +1,618 @@
 <?php
-include 'config/config.php';
-include 'temp/header.php';
+    
+    session_start();
+    include 'config/config.php';
+    include 'temp/header.php';
+    
+    $service_type = $_GET['type'] ?? null;
+    $category = $_GET['category'] ?? null;
+    
+    $category = ucwords(str_replace('-', ' ', $category));
 
-$slug = mysqli_real_escape_string($con, $_GET['slug']);
-$subCategoryName = ucwords(str_replace('-', ' ', $slug));
+    $sel = "SELECT * FROM sub_category WHERE sub_category='$category'";
+    
+    $run = mysqli_query($con, $sel);
 
-$sel = "SELECT * FROM sub_category WHERE sub_category='$subCategoryName'";
-$run = mysqli_query($con, $sel);
+    $row = mysqli_fetch_assoc($run); 
 
-$row = mysqli_fetch_assoc($run);
+    $service_id = $row['sub_id'];
 
-$title = $row['sub_category'];
+    //Fetch Inputs
+    $inputs = "SELECT * FROM category_attribute WHERE category_id=$service_id";
+    $run_input = mysqli_query($con, $inputs);
 
+    
 ?>
 
+
 <style>
-    /* Form Input Styling Fixes */
-.form-group {
-    margin-bottom: 1.5rem;
-    width: 100%;
-}
+    :root {
+        --primary: #fdc411; /* Your theme color */
+        --primary-light: #fff3d1;
+        --primary-dark: #e6b800;
+        --secondary: #3f37c9;
+        --accent: #f72585;
+        --dark: #1a1a2e;
+        --light: #f8f9fa;
+        --gray: #6c757d;
+        --success: #4cc9f0;
+        --warning: #f8961e;
+        --danger: #ef233c;
+        --white: #ffffff;
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --radius: 12px;
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
 
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: var(--heading-color);
-    font-size: 0.95rem;
-}
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background-color: #fefefe;
+        color: var(--dark);
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+    }
 
-.form-group select,
-.form-group input[type="text"],
-.form-group input[type="number"],
-.form-group input[type="datetime-local"],
-.form-group textarea {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: var(--default-font);
-    transition: all 0.3s ease;
-    background-color: var(--background-color);
-    box-sizing: border-box; /* Ensures padding doesn't affect width */
-}
+    .container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+    }
 
-/* Fix for datetime-local input */
-.form-group input[type="datetime-local"] {
-    padding: 0.7rem 1rem; /* Slightly adjusted padding */
-}
+    h1, h2, h3 {
+        font-weight: 700;
+        margin-top: 0;
+        line-height: 1.2;
+    }
 
-/* Textarea specific styling */
-.form-group textarea {
-    min-height: 120px;
-    resize: vertical;
-}
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--dark);
+    }
 
-/* Checkbox group alignment fix */
-.checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
-}
+    h2 {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+        color: var(--dark);
+    }
 
-.checkbox-group input[type="checkbox"] {
-    width: auto;
-    margin: 0;
-    transform: scale(1.2); /* Slightly larger checkbox */
-}
+    h3 {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+    }
 
-.checkbox-group label {
-    margin-bottom: 0;
-    font-weight: normal;
-    cursor: pointer;
-}
+    .service-description {
+        color: var(--gray);
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+        max-width: 600px;
+    }
 
-/* Focus states for all inputs */
-.form-group select:focus,
-.form-group input:focus,
-.form-group textarea:focus {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(253, 196, 17, 0.2);
-    outline: none;
-}
+    /* Card Styles */
+    .card {
+        background: var(--white);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        transition: var(--transition);
+        border: 1px solid rgba(0,0,0,0.05);
+    }
 
-/* Number input arrows styling */
-.form-group input[type="number"]::-webkit-inner-spin-button,
-.form-group input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
+    .card:hover {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
 
-.form-group input[type="number"] {
-    -moz-appearance: textfield;
-}
+    /* Form Styles */
+    .form-group {
+        margin-bottom: 1.75rem;
+        position: relative;
+    }
 
-/* Select dropdown arrow styling */
-.form-group select {
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: 1em;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .form-group select,
-    .form-group input,
-    .form-group textarea {
-        padding: 0.65rem 0.9rem;
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--dark);
         font-size: 0.95rem;
     }
-    
-    .checkbox-group {
-        gap: 0.5rem;
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: inherit;
+        transition: var(--transition);
+        background-color: var(--white);
+        box-sizing: border-box;
     }
-}
 
-/* Animation for dynamic fields */
-.form-field {
-    display: none;
-    margin-bottom: 1.5rem;
-    animation: fadeIn 0.3s ease;
-}
+    .form-control:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(253, 196, 17, 0.2);
+        outline: none;
+    }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+        line-height: 1.5;
+    }
+
+    /* Select Dropdown */
+    .select-wrapper {
+        position: relative;
+    }
+
+    .select-wrapper::after {
+        content: "⌄";
+        position: absolute;
+        top: 50%;
+        right: 1rem;
+        transform: translateY(-50%);
+        pointer-events: none;
+        color: var(--gray);
+        font-size: 1.2rem;
+    }
+
+    select.form-control {
+        appearance: none;
+        padding-right: 2.5rem;
+    }
+
+    /* Checkbox and Radio Styles */
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin: 0.5rem 0;
+    }
+
+    .checkbox-group input[type="checkbox"],
+    .checkbox-group input[type="radio"] {
+        width: 20px;
+        height: 20px;
+        margin: 0;
+        accent-color: var(--primary);
+    }
+
+    .checkbox-group label {
+        margin-bottom: 0;
+        font-weight: 500;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    /* Button Styles */
+    .btn {
+        background: var(--primary);
+        color: var(--dark);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        box-shadow: 0 2px 5px rgba(253, 196, 17, 0.3);
+    }
+
+    .btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(253, 196, 17, 0.4);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+    }
+
+    /* Layout Styles */
+    .booking-container {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .price-sidebar {
+        position: sticky;
+        top: 2rem;
+        align-self: start;
+    }
+
+    /* Price Card */
+    .price-card {
+        background: var(--primary);
+        color: var(--dark);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(253, 196, 17, 0.2);
+    }
+
+    .price-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0.5rem 0;
+    }
+
+    .price-per {
+        opacity: 0.9;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .price-details {
+        background: var(--white);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+
+    .price-line {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #f1f3f9;
+    }
+
+    .price-line:last-child {
+        border-bottom: none;
+    }
+
+    .total-price {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 2px solid #f1f3f9;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+
+    .notice {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        background-color: var(--primary-light);
+        border-radius: 8px;
+        font-size: 0.9rem;
+        color: var(--dark);
+        border-left: 4px solid var(--primary);
+    }
+
+    /* Date and Time Picker */
+    .datetime-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 992px) {
+        .booking-container {
+            grid-template-columns: 1fr;
+        }
+        
+        .price-sidebar {
+            position: static;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .datetime-group {
+            grid-template-columns: 1fr;
+        }
+        
+        h1 {
+            font-size: 2rem;
+        }
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animated {
+        animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    /* Theme Accents */
+    .theme-accent {
+        color: var(--primary);
+    }
 </style>
 
-
-<div class="container">
-    <h1>Book <?php echo htmlspecialchars($title); ?> Service</h1>
-    <p class="service-description">Professional <?php echo htmlspecialchars($title); ?> services at your convenience.</p>
+<div class="container animated">
+    <h1>Book Your <span class="theme-accent">Service</span></h1>
+    <p class="service-description">Schedule professional services at your convenience with our easy booking system.</p>
     
     <div class="booking-container">
-        <div class="booking-card">
+        <div class="card">
             <h2>Service Details</h2>
-            <form id="bookingForm" method="POST" action="process_booking.php">
-                <input type="hidden" name="service" value="<?php echo htmlspecialchars($title); ?>">
-                
+            
+            <form method="POST">
+            
+
+<!-- Service-specific dynamic inputs -->
+<?php while ($input = mysqli_fetch_assoc($run_input)) { ?>
+    <div class="form-group">
+        <label><?= htmlspecialchars($input['attribute_name']) ?></label>
+
+        <?php if ($input['input_type'] == 'text') { ?>
+            <input type="text" name="attr_<?= $input['id'] ?>" class="form-control">
+
+        <?php } elseif ($input['input_type'] == 'textarea') { ?>
+            <textarea name="attr_<?= $input['id'] ?>" class="form-control"></textarea>
+
+        <?php } elseif ($input['input_type'] == 'select') { 
+            $options = explode(',', $input['options']); ?>
+            <select name="attr_<?= $input['id'] ?>" class="form-control">
+                <option value="">Please Select</option>
+                <?php foreach ($options as $option) { ?>
+                    <option value="<?= trim($option) ?>"><?= trim($option) ?></option>
+                <?php } ?>
+            </select>
+
+        <?php } elseif ($input['input_type'] == 'checkbox') { 
+            $options = explode(',', $input['options']); ?>
+            <?php foreach ($options as $option) { ?>
+                <div class="checkbox-group">
+                    <input type="checkbox" name="attr_<?= $input['id'] ?>[]" value="<?= trim($option) ?>">
+                    <label><?= trim($option) ?></label>
+                </div>
+            <?php } ?>
+
+        <?php } elseif ($input['input_type'] == 'radio') { 
+            $options = explode(',', $input['options']); ?>
+            <?php foreach ($options as $option) { ?>
+                <div class="checkbox-group">
+                    <input type="radio" name="attr_<?= $input['id'] ?>" value="<?= trim($option) ?>">
+                    <label><?= trim($option) ?></label>
+                </div>
+            <?php } ?>
+        <?php } ?>
+    </div>
+<?php } ?>
+
+
+                <!-- Date and Time Selection -->
                 <div class="form-group">
-                    <label for="service">Service Type</label>
-                    <select id="service" name="service_type" required>
-                        <option value="">Select Service</option>
-                        <option value="Maid Service" data-price="35" data-price-with-materials="45">Maid Service (Hourly)</option>
-                        <option value="Carpentry" data-hourly-price="77.96" data-vat="true" data-cash="5">Carpentry</option>
-                        <option value="Handyman" data-hourly-price="77.96" data-vat="true" data-cash="5">Handyman</option>
-                        <option value="Electrical" data-hourly-price="77.96" data-vat="true" data-cash="5">Electrical</option>
-                        <option value="Plumbing" data-hourly-price="77.96" data-vat="true" data-cash="5">Plumbing</option>
-                        <option value="AC Installation (1 ton)" data-fixed-price="400">AC Installation (1 ton)</option>
-                        <option value="AC Installation (1.5 ton)" data-fixed-price="375">AC Installation (1.5 ton)</option>
-                        <option value="AC Installation (2.5 ton / 3 ton)" data-fixed-price="425">AC Installation (2.5 ton / 3 ton)</option>
-                        <option value="AC Removing" data-fixed-price="150">AC Removing</option>
-                        <option value="AC Cleaning - Slip" data-fixed-price="130">AC Cleaning - Slip</option>
-                        <option value="AC Cleaning - Duct" data-fixed-price="350">AC Cleaning - Duct</option>
-                        <option value="Smart Lock Installation" data-fixed-price="400">Smart Lock Installation</option>
-                        <option value="Water Heater Installation" data-fixed-price="225">Water Heater Installation</option>
-                        <option value="Door Bell Installation" data-fixed-price="130">Door Bell Installation</option>
-                        <!-- Add other services with appropriate data attributes -->
-                    </select>
-                </div>
-                
-                <!-- Price display container -->
-                <div id="price-display" class="price-display" style="display: none;">
-                    <h4>Estimated Cost</h4>
-                    <div id="price-details"></div>
-                </div>
-                
-                <!-- Dynamic fields will appear here -->
-                <div id="num_cleaners" class="form-field">
-                    <label for="num_cleaners_input">Number of Cleaners</label>
-                    <input type="number" id="num_cleaners_input" class="form-control" name="num_cleaners" min="1" max="10" value="1">
-                </div>
-                
-                <div id="num_workers" class="form-field">
-                    <label for="num_workers_input">Number of Workers</label>
-                    <input type="number" id="num_workers_input" class="form-control" name="num_workers" min="1" max="10" value="1">
-                </div>
-                
-                <div id="add_materials" class="form-field">
-                    <div class="checkbox-group">
-                        <input type="checkbox" id="add_materials_input" class="form-control" name="add_materials">
-                        <label for="add_materials_input">We'll bring cleaning materials (+10 AED)</label>
+                    <div class="date-time-group">
+                        <div>
+                            <label for="date">Date</label>
+                            <input type="date" id="date" name="date" value="2025-08-31" min="2025-08-31">
+                        </div>
+                        <div>
+                            <label for="time">Time</label>
+                            <select id="time" name="time">
+                                <option value="">Please Select Time</option>
+                                <option value="08:00">8:00 AM</option>
+                                <option value="09:00">9:00 AM</option>
+                                <option value="10:00">10:00 AM</option>
+                                <option value="11:00">11:00 AM</option>
+                                <option value="12:00">12:00 PM</option>
+                                <option value="13:00">1:00 PM</option>
+                                <option value="14:00">2:00 PM</option>
+                                <option value="15:00">3:00 PM</option>
+                                <option value="16:00">4:00 PM</option>
+                                <option value="17:00">5:00 PM</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 
-                <div id="duration" class="form-field">
-                    <label for="duration_input">Duration (hours)</label>
-                    <input type="number" id="duration_input" class="form-control" name="duration" min="1" max="8" value="1">
+                <!-- Additional Information -->
+                <div class="form-group">
+                    <div class="form-title">Anything else you want to describe</div>
+                    <textarea name="description" placeholder="Please provide any special instructions or details about your cleaning needs..."></textarea>
                 </div>
                 
-                <div id="start_time" class="form-field">
-                    <label for="start_time_input">Start Date & Time</label>
-                    <input type="datetime-local" class="form-control" id="start_time_input" name="start_time" required>
+                <!-- Price Calculation -->
+                <div class="price-display">
+                    <div>Estimated Price:</div>
+                    <div class="price" id="priceDisplay">AED 100</div>
                 </div>
+
+                <button name="submit" class="btn">Submit</button>
                 
-                <div id="notes" class="form-field">
-                    <label for="notes_input">Additional Notes</label>
-                    <textarea id="notes_input" class="form-control" name="notes" rows="4"></textarea>
-                </div>
-                
-                <button type="submit" class="btn">Book Now</button>
             </form>
+            
+            <?php
+
+                if (isset($_POST['submit'])) {
+                    $cat_id   = $row['sub_id'] ?? null;
+                    $type     = $_GET['type'] ?? null;
+                    $duration = $_POST['hours'] ?? null;
+                    $date     = $_POST['service_date'] ?? null;
+                    $time     = $_POST['service_time'] ?? null;
+                    $info     = $_POST['notes'] ?? null;
+                    $user_id  = $_SESSION['user_id'] ?? null;
+                    $status   = 0;
+                    $mood     = $_POST['payment_mode'] ?? 'cash';
+                    $code     = uniqid();
+                    $date_now = date("Y-m-d");
+
+                    // If service type is quotation, price should be NULL
+                    $price = ($service_type == 'quotation') ? '' : null;
+
+                    // Payment mode
+                    $payment_mode = ($mood == 'card') ? 1 : 0;
+
+                    // Insert order
+                    $insert = "INSERT INTO `order` 
+                            (user_id, sub_id, type, duration, selected_date, selected_time, additional, payment_mode, status, code, created_at) 
+                            VALUES ('$user_id', '$cat_id', '$type', '$duration', '$date', '$time', '$info', '$payment_mode', '$status', '$code', '$date_now')";
+
+                    $run = mysqli_query($con, $insert);
+
+                    if ($run) {
+                        $order_id = mysqli_insert_id($con); // get last inserted order ID
+
+                        // Loop through all POST inputs to find dynamic attributes
+                        foreach ($_POST as $key => $value) {
+                            if (strpos($key, 'attr_') === 0) { // only process attributes
+                                $attr_id = str_replace('attr_', '', $key);
+
+                                // Handle multiple values (checkboxes)
+                                if (is_array($value)) {
+                                    $attr_value = implode(', ', $value);
+                                } else {
+                                    $attr_value = $value;
+                                }
+
+                                // Fetch attribute name from category_attribute table
+                                $attr_name = '';
+                                $q = mysqli_query($con, "SELECT attribute_name FROM category_attribute WHERE id='$attr_id'");
+                                if ($q && mysqli_num_rows($q) > 0) {
+                                    $res = mysqli_fetch_assoc($q);
+                                    $attr_name = $res['attribute_name'];
+                                }
+
+                                // Insert into order_attributes table
+                                $insertAttr = "INSERT INTO order_attributes 
+                                            (order_id, attribute_name, attribute_value, is_active, is_delete) 
+                                            VALUES (
+                                                '$order_id', 
+                                                '".mysqli_real_escape_string($con, $attr_name)."', 
+                                                '".mysqli_real_escape_string($con, $attr_value)."', 
+                                                1, 
+                                                0
+                                            )";
+                                mysqli_query($con, $insertAttr);
+                            }
+                        }
+
+                        // Redirect to process page
+                        echo "<script>window.open('" . base_url() . "process.php?order=$code', '_self')</script>";
+                    } else {
+                        echo "<script>alert('Something went wrong.')</script>";
+                        echo "<script>window.open('" . base_url() . "', '_self')</script>";
+                    }
+                }
+
+            ?>
+
+
+
+            
         </div>
         
-        <div class="service-highlights">
-            <!-- Your existing highlights content -->
+        <div class="price-sidebar">
+            
+            <?php if(!$service_type == 'quotation'){ ?>
+            <div class="price-card">
+                <div class="price-value"><?= $row['price']?></div>
+                <div class="price-per">for 2 hours service</div>
+            </div>
+            <?php }?>
+            
+
+                <div class="price-details">
+                    <?php if(!$service_type == 'quotation'){ ?>
+                    <div class="price-line">
+                        <span>Base Price:</span>
+                        <span><?php echo number_format($row['price']); ?> AED</span>
+                    </div>
+                    <?php }?>
+                    <div class="price-line">
+                        <span>Duration (2 hours):</span>
+                        <span>+80 AED</span>
+                    </div>
+                    <div class="price-line">
+                        <span>VAT (5%):</span>
+                        <span>+9 AED</span>
+                    </div>
+                    <?php if(!$service_type == 'quotation'){ ?>
+                    <div class="total-price">
+                        <span>Total Amount:</span>
+                        <span>189 AED</span>
+                    </div>
+                    <?php }?>
+                </div>
+                
+                <div class="notice">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 8px;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    Final price may vary based on service requirements
+                </div>
         </div>
     </div>
 </div>
 
 <script>
-const serviceInputs = {
-    "Maid Service": ["num_cleaners", "add_materials", "duration", "start_time", "notes"],
-    "Deep Cleaning": ["start_time", "notes"],
-    "Pest Control": ["start_time", "notes"],
-    "Carpentry": ["num_workers", "duration", "start_time", "notes"],
-    "Handyman": ["num_workers", "duration", "start_time", "notes"],
-    "Electrical": ["num_workers", "duration", "start_time", "notes"],
-    "Plumbing": ["num_workers", "duration", "start_time", "notes"],
-    "Painting": ["start_time", "notes"],
-    "AC Maintenance & Cleaning": ["start_time", "notes"],
-    "Appliance Repair & Installation": ["start_time", "notes"],
-    "Remodeling & Maintenance": ["num_workers", "duration", "start_time", "notes"],
-    "Garden Maintenance": ["num_workers", "duration", "start_time", "notes"],
-    "Movers & Packers": ["num_workers", "start_time", "notes"],
-    "One Item Move": ["start_time", "notes"],
-    "Storage (Temperature control)": ["start_time", "notes"],
-    "Junk Removal": ["num_workers", "start_time", "notes"],
-    "AC Installation (1 ton)": ["start_time", "notes"],
-    "AC Installation (1.5 ton)": ["start_time", "notes"],
-    "AC Installation (2.5 ton / 3 ton)": ["start_time", "notes"],
-    "AC Removing": ["start_time", "notes"],
-    "AC Cleaning - Slip": ["start_time", "notes"],
-    "AC Cleaning - Duct": ["start_time", "notes"],
-    "Smart Lock Installation": ["start_time", "notes"],
-    "Water Heater Installation": ["start_time", "notes"],
-    "Door Bell Installation": ["start_time", "notes"]
-};
-
-const quotationServices = [
-    "Deep Cleaning", "Pest Control", "Painting", 
-    "AC Maintenance & Cleaning", "Appliance Repair & Installation",
-    "Movers & Packers", "One Item Move", "Storage (Temperature control)",
-    "Junk Removal", "Sofa Cleaning", "Carpet Cleaning"
-];
-
-document.getElementById('service').addEventListener('change', function() {
-    const selectedService = this.value;
-    const selectedOption = this.options[this.selectedIndex];
+// Set minimum date to today and default time to next full hour
+document.addEventListener('DOMContentLoaded', function() {
+    // Date picker
+    const today = new Date().toISOString().split('T')[0];
+    const dateInput = document.getElementById('service_date');
+    dateInput.min = today;
     
-    // Hide all fields first
-    document.querySelectorAll('.form-field').forEach(f => f.style.display = 'none');
-    document.getElementById('price-display').style.display = 'none';
+    // Set default to today
+    dateInput.value = today;
     
-    // Show relevant fields
-    if (serviceInputs[selectedService]) {
-        serviceInputs[selectedService].forEach(id => {
-            document.getElementById(id).style.display = 'block';
-        });
-    }
+    // Time picker - set to next full hour
+    const now = new Date();
+    const nextHour = new Date(now.getTime() + 60 * 60 * 1000);
+    const hours = String(nextHour.getHours()).padStart(2, '0');
+    document.getElementById('service_time').value = `${hours}:00`;
     
-    // Show price information if available
-    if (quotationServices.includes(selectedService)) {
-        showQuotationNotice();
-    } 
-    else if (selectedOption.dataset.fixedPrice) {
-        showFixedPrice(selectedOption.dataset.fixedPrice);
-    } 
-    else if (selectedOption.dataset.hourlyPrice) {
-        showHourlyPrice(
-            parseFloat(selectedOption.dataset.hourlyPrice),
-            selectedOption.dataset.vat === "true",
-            selectedOption.dataset.cash ? parseInt(selectedOption.dataset.cash) : 0
-        );
-    } 
-    else if (selectedOption.dataset.price) {
-        showMaidServicePrice(
-            parseFloat(selectedOption.dataset.price),
-            selectedOption.dataset.priceWithMaterials ? parseFloat(selectedOption.dataset.priceWithMaterials) : 0
-        );
+    // Update price when duration changes
+    const hoursSelect = document.getElementById('hours');
+    const priceValue = document.querySelector('.price-value');
+    const priceLines = document.querySelectorAll('.price-details .price-line');
+    const totalPrice = document.querySelector('.total-price span:last-child');
+    
+    hoursSelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const duration = parseInt(this.value);
+        const basePrice = 100;
+        let total = 0;
+        
+        if (duration === 1) {
+            total = 100;
+            updatePriceDisplay(basePrice, 0, total);
+        } else if (duration === 2) {
+            total = 180;
+            updatePriceDisplay(basePrice, 80, total);
+        } else if (duration === 3) {
+            total = 250;
+            updatePriceDisplay(basePrice, 150, total);
+        } else if (duration === 4) {
+            total = 300;
+            updatePriceDisplay(basePrice, 200, total);
+        }
+        
+        priceValue.textContent = `${total} AED`;
+        document.querySelector('.price-per').textContent = `for ${duration} hour${duration > 1 ? 's' : ''} service`;
+    });
+    
+    function updatePriceDisplay(base, durationFee, total) {
+        const vat = Math.round(total * 0.05);
+        
+        priceLines[0].querySelector('span:last-child').textContent = `${base} AED`;
+        priceLines[1].querySelector('span:last-child').textContent = `+${durationFee} AED`;
+        priceLines[2].querySelector('span:last-child').textContent = `+${vat} AED`;
+        totalPrice.textContent = `${total + vat} AED`;
     }
 });
-
-function showQuotationNotice() {
-    const priceDisplay = document.getElementById('price-display');
-    priceDisplay.style.display = 'block';
-    document.getElementById('price-details').innerHTML = `
-        <p class="quotation-notice">This service requires a quotation. Our team will contact you with a customized price.</p>
-    `;
-}
-
-function showFixedPrice(price) {
-    const priceDisplay = document.getElementById('price-display');
-    priceDisplay.style.display = 'block';
-    document.getElementById('price-details').innerHTML = `
-        <div class="price-line">
-            <span>Fixed Price:</span>
-            <span>${price} AED</span>
-        </div>
-        <div class="total-price">
-            <span>Total:</span>
-            <span>${price} AED</span>
-        </div>
-    `;
-}
-
-function showHourlyPrice(hourlyRate, hasVat, cashFee) {
-    const priceDisplay = document.getElementById('price-display');
-    priceDisplay.style.display = 'block';
-    
-    let priceHTML = `
-        <div class="price-line">
-            <span>Hourly Rate (per worker):</span>
-            <span>${hourlyRate.toFixed(2)} AED</span>
-        </div>`;
-    
-    if (hasVat) {
-        priceHTML += `
-        <div class="price-line">
-            <span>VAT (5%):</span>
-            <span>${(hourlyRate * 0.05).toFixed(2)} AED</span>
-        </div>`;
-    }
-    
-    if (cashFee > 0) {
-        priceHTML += `
-        <div class="price-line">
-            <span>Cash Payment Fee:</span>
-            <span>${cashFee} AED</span>
-        </div>`;
-    }
-    
-    priceHTML += `
-        <div class="price-line">
-            <span>Maximum 3 hours at this rate</span>
-            <span></span>
-        </div>
-        <div class="quotation-notice">
-            Longer jobs require a quotation
-        </div>`;
-    
-    document.getElementById('price-details').innerHTML = priceHTML;
-}
-
-function showMaidServicePrice(basePrice, priceWithMaterials) {
-    const priceDisplay = document.getElementById('price-display');
-    priceDisplay.style.display = 'block';
-    
-    document.getElementById('price-details').innerHTML = `
-        <div class="price-line">
-            <span>Base Rate (per hour):</span>
-            <span>${basePrice} AED</span>
-        </div>
-        <div class="price-line">
-            <span>With Materials (per hour):</span>
-            <span>${priceWithMaterials} AED</span>
-        </div>
-        <div class="quotation-notice">
-            Price will be calculated based on duration and cleaners
-        </div>
-    `;
-}
-
-// Calculate dynamic prices when inputs change
-document.getElementById('duration')?.addEventListener('input', updateDynamicPrice);
-document.getElementById('num_cleaners')?.addEventListener('input', updateDynamicPrice);
-document.getElementById('num_workers')?.addEventListener('input', updateDynamicPrice);
-document.getElementById('add_materials')?.addEventListener('change', updateDynamicPrice);
-
-function updateDynamicPrice() {
-    const serviceSelect = document.getElementById('service');
-    const selectedService = serviceSelect.value;
-    const selectedOption = serviceSelect.options[serviceSelect.selectedIndex];
-    
-    if (selectedService === "Maid Service") {
-        const duration = parseInt(document.getElementById('duration_input').value) || 1;
-        const cleaners = parseInt(document.getElementById('num_cleaners_input').value) || 1;
-        const withMaterials = document.getElementById('add_materials_input').checked;
-        const rate = withMaterials ? 
-            parseFloat(selectedOption.dataset.priceWithMaterials) : 
-            parseFloat(selectedOption.dataset.price);
-        
-        const total = rate * duration * cleaners;
-        
-        document.getElementById('price-details').innerHTML = `
-            <div class="price-line">
-                <span>Rate (per cleaner per hour):</span>
-                <span>${rate} AED</span>
-            </div>
-            <div class="price-line">
-                <span>Number of Cleaners:</span>
-                <span>${cleaners}</span>
-            </div>
-            <div class="price-line">
-                <span>Duration:</span>
-                <span>${duration} hours</span>
-            </div>
-            <div class="total-price">
-                <span>Estimated Total:</span>
-                <span>${total} AED</span>
-            </div>
-        `;
-    }
-    else if (["Carpentry", "Handyman", "Electrical", "Plumbing"].includes(selectedService)) {
-        const duration = parseInt(document.getElementById('duration_input').value) || 1;
-        const workers = parseInt(document.getElementById('num_workers_input').value) || 1;
-        const hourlyRate = parseFloat(selectedOption.dataset.hourlyPrice);
-        const hasVat = selectedOption.dataset.vat === "true";
-        const cashFee = selectedOption.dataset.cash ? parseInt(selectedOption.dataset.cash) : 0;
-        
-        let subtotal = hourlyRate * duration * workers;
-        let vat = hasVat ? subtotal * 0.05 : 0;
-        let total = subtotal + vat + (cashFee > 0 ? cashFee : 0);
-        
-        let priceHTML = `
-            <div class="price-line">
-                <span>Hourly Rate (per worker):</span>
-                <span>${hourlyRate.toFixed(2)} AED</span>
-            </div>
-            <div class="price-line">
-                <span>Number of Workers:</span>
-                <span>${workers}</span>
-            </div>
-            <div class="price-line">
-                <span>Duration:</span>
-                <span>${duration} hours</span>
-            </div>`;
-        
-        if (hasVat) {
-            priceHTML += `
-            <div class="price-line">
-                <span>VAT (5%):</span>
-                <span>${vat.toFixed(2)} AED</span>
-            </div>`;
-        }
-        
-        if (cashFee > 0) {
-            priceHTML += `
-            <div class="price-line">
-                <span>Cash Payment Fee:</span>
-                <span>${cashFee} AED</span>
-            </div>`;
-        }
-        
-        if (duration > 3) {
-            priceHTML += `
-            <div class="quotation-notice">
-                For jobs longer than 3 hours, please contact us for a quotation
-            </div>`;
-        }
-        
-        priceHTML += `
-            <div class="total-price">
-                <span>Estimated Total:</span>
-                <span>${total.toFixed(2)} AED</span>
-            </div>`;
-        
-        document.getElementById('price-details').innerHTML = priceHTML;
-    }
-}
 </script>
 
 <?php include 'temp/footer.php';?>
+
+

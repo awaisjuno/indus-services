@@ -9,8 +9,12 @@ RewriteRule ^ - [L]
 # Rewrite "service/{slug}"
 RewriteRule ^service/([a-zA-Z0-9-]+)/?$ service.php?slug=$1 [QSA,L]
 
-# Rewrite "options/{slug}"
+# Rewrite "options/{type}/{category}" (two parameters)
+RewriteRule ^options/([a-zA-Z0-9-]+)/([a-zA-Z0-9-]+)/?$ options.php?type=$1&category=$2 [QSA,L]
+
+# Rewrite "options/{slug}" (fallback for one parameter)
 RewriteRule ^options/([a-zA-Z0-9-]+)/?$ options.php?slug=$1 [QSA,L]
+
 
 # Rewrite "signin"
 RewriteRule ^signin/?$ signin.php [QSA,L]

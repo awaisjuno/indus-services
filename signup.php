@@ -80,18 +80,18 @@
                     mysqli_autocommit($con, false);
                     $error = false;
 
-                    $insert_user = mysqli_query($con, "INSERT INTO user (email, password, status) 
-                        VALUES ('$email', '$hashed_password', 'user')");
+                    $insert_user = mysqli_query($con, "INSERT INTO user (email, password, status, role) 
+                        VALUES ('$email', '$hashed_password', '1', 'user')");
 
                     if ($insert_user) {
                         $user_id = mysqli_insert_id($con);
 
-                        $insert_detail = mysqli_query($con, "INSERT INTO user_detail (user_id, first_name, last_name, mobile) 
-                            VALUES ('$user_id', '$first_name', '$last_name', '$mobile')");
+                        $insert_detail = mysqli_query($con, "INSERT INTO user_detail (user_id, first_name, last_name, img, mobile) 
+                            VALUES ('$user_id', '$first_name', '$last_name', '$img', '$mobile')");
 
                         if ($insert_detail) {
                             mysqli_commit($con);
-                            echo "<script>alert('Account created successfully. Please log in.'); window.location.href='login.php';</script>";
+                            echo "<script>alert('Account created successfully. Please log in.'); window.location.href='signin.php';</script>";
                             exit();
                         } else {
                             $error = true;

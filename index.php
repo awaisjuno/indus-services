@@ -1,7 +1,94 @@
 <?php
+session_start();
 include 'config/config.php';
 include 'temp/header.php';
 ?>
+
+<script>
+    
+// FAQ toggle functionality
+document.addEventListener('DOMContentLoaded', function() {
+  const faqItems = document.querySelectorAll('.faq-item h3');
+  
+  faqItems.forEach(item => {
+    item.addEventListener('click', function() {
+      // Toggle active class on parent item
+      const parentItem = this.parentElement;
+      parentItem.classList.toggle('active');
+      
+      // Toggle icon between plus and minus
+      const icon = this.querySelector('.faq-toggle');
+      if (parentItem.classList.contains('active')) {
+        icon.classList.remove('bi-plus-lg');
+        icon.classList.add('bi-dash-lg');
+      } else {
+        icon.classList.remove('bi-dash-lg');
+        icon.classList.add('bi-plus-lg');
+      }
+    });
+  });
+});
+</script>
+
+<style>
+    /* FAQ Section Styles */
+.faq-item {
+  margin-bottom: 15px;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.faq-item h3 {
+  padding: 20px;
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2a2a2a;
+}
+
+.faq-item h3 .num {
+  color: #fdc411;
+  margin-right: 10px;
+  font-weight: 700;
+}
+
+.faq-item h3 .question {
+  flex: 1;
+}
+
+.faq-item h3 .faq-toggle {
+  margin-left: 15px;
+  transition: all 0.3s ease;
+  color: #fdc411;
+}
+
+.faq-item .faq-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  padding: 0 20px;
+}
+
+.faq-item.active .faq-content {
+  max-height: 300px;
+  padding: 0 20px 20px;
+}
+
+.faq-item.active {
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+}
+
+.faq-item:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+</style>
 
   <!-- Indus Services Preloader - White Background -->
   <div class="indus-preloader">
@@ -24,16 +111,16 @@ include 'temp/header.php';
 
 <main class="main">
 
-<!-- Hero Section with Image Slider -->
+
+<!-- Hero Section with Updated Image Slider -->
 <section id="hero" class="hero dark-background" style="padding: 0px;">
-  <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+  <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
+      
       <!-- Slide 1 -->
       <div class="carousel-item active" style="position: relative;">
-        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" class="d-block w-100" alt="Modern home">
-        <!-- Slider overlay (only on the image) -->
+        <img src="<?= base_url()?>assets/img/pexels-tima-miroshnichenko-6195125.jpg" class="d-block w-100" alt="Modern home">
         <div class="slider-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #fdc115; opacity: 0.05;"></div>
-        
         <div class="carousel-caption">
           <div class="container" data-aos="fade-up">
             <div class="hero-content" data-aos="fade-up" data-aos-delay="100">
@@ -47,13 +134,11 @@ include 'temp/header.php';
           </div>
         </div>
       </div>
-      
+
       <!-- Slide 2 -->
       <div class="carousel-item" style="position: relative;">
-        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" class="d-block w-100" alt="Cleaning service">
-        <!-- Slider overlay (only on the image) -->
+        <img src="<?= base_url()?>assets/img/pexels-tima-miroshnichenko-6195277.jpg" class="d-block w-100" alt="Cleaning service">
         <div class="slider-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #fdc115; opacity: 0.05;"></div>
-        
         <div class="carousel-caption">
           <div class="container" data-aos="fade-up">
             <div class="hero-content" data-aos="fade-up" data-aos-delay="100">
@@ -67,19 +152,38 @@ include 'temp/header.php';
           </div>
         </div>
       </div>
+
+      <!-- Slide 3 (Optional: Add a third caption or keep it visual only) -->
+      <div class="carousel-item" style="position: relative;">
+        <img src="<?= base_url()?>assets/img/pexels-tima-miroshnichenko-6195111.jpg" class="d-block w-100" alt="Modern home">
+        <div class="slider-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #fdc115; opacity: 0.05;"></div>
+        <div class="carousel-caption">
+          <div class="container" data-aos="fade-up">
+            <div class="hero-content" data-aos="fade-up" data-aos-delay="100">
+              <div class="hero-tag">
+                <i class="bi bi-house-check"></i>
+                <span>Complete Home Care</span>
+              </div>
+              <h1>Professional <span class="highlight">Cleaning & Maintenance</span> You Can Count On</h1>
+              <p class="lead">Reliable and efficient services tailored to your home's unique needs.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
-    
-    <!-- Carousel Controls -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
   </div>
 </section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const heroCarousel = document.querySelector('#carouselExampleSlidesOnly');
+    new bootstrap.Carousel(heroCarousel, {
+      interval: 5000, // Adjust to your desired slide interval
+      ride: 'carousel'
+    });
+  });
+</script>
 
 
 <!-- Horizontal Scrolling Marquee -->
@@ -214,6 +318,26 @@ include 'temp/header.php';
 </section>
 
 <style>
+
+.services-marquee .marquee-track {
+  display: flex;
+  gap: 2rem; /* spacing between items */
+  animation: marquee 30s linear infinite;
+}
+
+.services-marquee .marquee-track:hover {
+  animation-play-state: paused; /* Stop animation on hover */
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
   .services-marquee {
     background: #fdc411;
     padding: 10px 0;
@@ -257,56 +381,188 @@ include 'temp/header.php';
   }
 </style>
 
-
 <!-- Trusted Service Experts Section -->
-<section class="trusted-experts py-5" style="background-color: #fffdf5;">
+<section class="trusted-experts py-5">
   <div class="container">
+    <div class="section-header text-center mb-5" data-aos="fade-up">
+      <h2 class="display-5 fw-bold mb-3">Why Choose Indus Service?</h2>
+      <p class="lead text-muted">We're committed to delivering exceptional service with complete peace of mind</p>
+    </div>
+    
     <div class="row g-4">
+      <!-- Card 1 -->
       <div class="col-md-6 col-lg-3">
         <div class="feature-card text-center p-4 h-100" data-aos="fade-up" data-aos-delay="100">
           <div class="feature-icon mb-3">
-            <img src="https://cdn-icons-png.flaticon.com/512/3132/3132739.png" alt="Trusted Experts" style="width: 60px; height: 60px; object-fit: contain;">
+            <div class="icon-wrapper">
+              <i class="fas fa-user-shield fa-3x"></i>
+            </div>
           </div>
-          <h3 class="h5 mb-2">Trusted Service Experts</h3>
-          <p class="mb-0">Licensed and background-checked professionals</p>
+          <h3 class="h5 mb-3 fw-bold">Trusted Service Experts</h3>
+          <p class="mb-0 text-muted">Licensed and background-checked professionals who meet our high standards</p>
         </div>
       </div>
       
+      <!-- Card 2 -->
       <div class="col-md-6 col-lg-3">
         <div class="feature-card text-center p-4 h-100" data-aos="fade-up" data-aos-delay="200">
           <div class="feature-icon mb-3">
-            <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" alt="5 Star Rating" style="width: 60px; height: 60px; object-fit: contain;">
+            <div class="icon-wrapper">
+              <i class="fas fa-star fa-3x"></i>
+            </div>
           </div>
-          <h3 class="h5 mb-2">Rated 5 / 5</h3>
-          <p class="mb-0">From 956 Reviews</p>
+          <h3 class="h5 mb-3 fw-bold">Rated 5/5 Stars</h3>
+          <p class="mb-0 text-muted">From 956+ satisfied customer reviews</p>
         </div>
       </div>
       
+      <!-- Card 3 -->
       <div class="col-md-6 col-lg-3">
         <div class="feature-card text-center p-4 h-100" data-aos="fade-up" data-aos-delay="300">
           <div class="feature-icon mb-3">
-            <img src="https://cdn-icons-png.flaticon.com/512/1055/1055683.png" alt="Protection" style="width: 60px; height: 60px; object-fit: contain;">
+            <div class="icon-wrapper">
+              <i class="fas fa-shield-alt fa-3x"></i>
+            </div>
           </div>
-          <h3 class="h5 mb-2">AED 1000 Protection</h3>
-          <p class="mb-0">Damage protection guarantee</p>
+          <h3 class="h5 mb-3 fw-bold">AED 1000 Protection</h3>
+          <p class="mb-0 text-muted">Damage protection guarantee on all services</p>
         </div>
       </div>
       
+      <!-- Card 4 -->
       <div class="col-md-6 col-lg-3">
         <div class="feature-card text-center p-4 h-100" data-aos="fade-up" data-aos-delay="400">
           <div class="feature-icon mb-3">
-            <img src="https://cdn-icons-png.flaticon.com/512/2721/2721287.png" alt="Pay After" style="width: 60px; height: 60px; object-fit: contain;">
+            <div class="icon-wrapper">
+              <i class="fas fa-hand-holding-usd fa-3x"></i>
+            </div>
           </div>
-          <h3 class="h5 mb-2">Pay After Service</h3>
-          <p class="mb-0">Only pay when you're satisfied</p>
+          <h3 class="h5 mb-3 fw-bold">Pay After Service</h3>
+          <p class="mb-0 text-muted">Only pay when you're completely satisfied</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<style>
+  /* Trusted Experts Section Styling */
+  .trusted-experts {
+    background: linear-gradient(135deg, #fffdf5 0%, #fff9e6 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .trusted-experts::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://www.transparenttextures.com/patterns/light-paper-fibers.png');
+    opacity: 0.1;
+    pointer-events: none;
+  }
+  
+  .section-header h2 {
+    color: #2a2a2a;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .section-header h2::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: #fdc411;
+    border-radius: 3px;
+  }
+  
+  .feature-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+  }
+  
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+  
+  .feature-card::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: #fdc411;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+    z-index: -1;
+  }
+  
+  .feature-card:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  
+  .icon-wrapper {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(253, 196, 17, 0.1);
+    border-radius: 50%;
+    color: #fdc411;
+    transition: all 0.3s ease;
+  }
+  
+  .feature-card:hover .icon-wrapper {
+    background: #fdc411;
+    color: white;
+    transform: rotateY(180deg);
+  }
+  
+  .feature-card h3 {
+    color: #333;
+    transition: color 0.3s ease;
+  }
+  
+  .feature-card:hover h3 {
+    color: #000;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .feature-card {
+      text-align: center;
+    }
+    
+    .icon-wrapper {
+      width: 70px;
+      height: 70px;
+    }
+  }
+
+
+</style>
+
 <!-- Our Most Popular Services Section -->
-<section id="popular-services" class="popular-services section">
+<section id="services" class="popular-services section">
   <div class="container" data-aos="fade-up">
     <div class="section-title">
       <h2>Our Most Popular Services in Abu Dhabi</h2>
@@ -317,7 +573,7 @@ include 'temp/header.php';
       <?php 
       // Check connection first
       if(isset($con) && $con) {
-          $sel = "SELECT * FROM sub_category WHERE is_active='1'";
+            $sel = "SELECT * FROM sub_category WHERE display = 1 AND is_active = 1";
           $run = mysqli_query($con, $sel);
           
           if(mysqli_num_rows($run) > 0) {
@@ -355,7 +611,7 @@ include 'temp/header.php';
 </section>
 
 <!-- Stats Section -->
-<section id="stats" class="stats section light-background">
+<section id="stats" class="stats section trusted-experts">
   <div class="container" data-aos="fade-up" data-aos-delay="100">
     <div class="row gy-4">
       <div class="col-lg-6 col-md-12">
@@ -538,7 +794,7 @@ include 'temp/header.php';
 </section><!-- /Testimonials Section -->
 
 <!-- How We Work Section -->
-<section id="how-we-work" class="how-we-work section">
+<section id="how-we-work" class="how-we-work section trusted-experts">
   <!-- Section Title -->
   <div class="container section-title" data-aos="fade-up">
     <h2>How We Work</h2>
@@ -754,7 +1010,7 @@ include 'temp/header.php';
 </section>
 
 <!-- Contact Section -->
-<section id="contact" class="contact section">
+<section id="contact" class="contact section trusted-experts">
   <!-- Section Title -->
   <div class="container section-title" data-aos="fade-up">
     <h2>Contact Us</h2>

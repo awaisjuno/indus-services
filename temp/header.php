@@ -288,7 +288,7 @@
       color: #fdc411;
     }
 
-    /* Sign In Button Styles */
+    /* Sign In Button Styles - Simplified */
     .btn-signin {
       display: inline-flex;
       align-items: center;
@@ -303,10 +303,9 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       border: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(253, 196, 17, 0.2);
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       position: relative;
-      overflow: hidden;
       margin-left: 10px;
       margin-right: 10px;
       min-width: 100px;
@@ -317,39 +316,26 @@
     }
 
     .btn-signin:hover {
-      background-color: #ffc720;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(253, 196, 17, 0.3);
+      color: #000;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
     }
 
-    .btn-signin:active {
-      transform: translateY(0);
-      box-shadow: 0 2px 8px rgba(253, 196, 17, 0.3);
-      background-color: #f0b000;
-    }
-
-    .btn-signin:focus {
-      outline: 2px solid rgba(253, 196, 17, 0.5);
-      outline-offset: 2px;
-    }
-
-    /* Wrench icon hover effect */
     .btn-signin i {
-      opacity: 0;
-      width: 0;
-      margin-right: 0;
-      transition: all 0.3s ease;
+      margin-right: 8px;
       font-size: 1rem;
     }
 
-    .btn-signin:hover i {
-      opacity: 1;
-      width: auto;
-      margin-right: 8px;
+    .navmenu li:hover>a, .navmenu .active, .navmenu .active:focus {
+      color: #000;
+    }
+
+    .navmenu a, .navmenu a:focus {
+      color: #000;
     }
 
     /* Mobile responsiveness */
     @media (max-width: 992px) {
+        
       .header-inner {
         padding: 0 15px;
       }
@@ -402,18 +388,6 @@
         padding: 12px 20px;
         justify-content: center;
       }
-
-      .btn-signin:hover {
-        background: var(--accent-color);
-        color: #000;
-      }
-      
-      /* Always show icon on mobile */
-      .btn-signin i {
-        opacity: 1;
-        width: auto;
-        margin-right: 8px;
-      }
     }
 
     /* Hide when loaded */
@@ -422,43 +396,52 @@
       pointer-events: none;
       transition: opacity 0.8s ease;
     }
+
+    /* Hide the default Google Translate UI elements */
+    .goog-te-banner-frame.skiptranslate,
+    .goog-te-gadget-icon,
+    #goog-gt-tt,
+    .goog-te-balloon-frame,
+    .goog-te-menu-value { display: none !important; }
+    body { top: 0 !important; }
+
   </style>
 </head>
 
 <body class="index-page">
 
+  <!-- Hidden Google Translate Element -->
+  <div id="google_translate_element" style="display: none;"></div>
+
   <!-- Main Header -->
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="header-inner">
       <a href="<?= base_url()?>" class="logo-container">
-        <img src="<?= base_url()?>assets/img/logoi.png" width="100px" height="50px" alt="Indus Services Logo">
+        <img src="<?= base_url()?>assets/img/logoi.png" width="100" height="50" alt="Indus Services Logo">
       </a>
-
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="<?= base_url()?>about">About Us</a></li>
+          <li><a href="<?= base_url()?>about.php">About Us</a></li>
           <li><a href="<?= base_url()?>#contact">Contact Us</a></li>
           <li><a href="<?= base_url()?>#services">Services</a></li>
-          
-          <?php if ($userName): ?>
-            <li><a href="#"><?= $userName ?></a></li>
-            <li><a href="<?= base_url()?>logout">Logout</a></li>
+          <?php if (!empty($_SESSION['user_id'])): ?>
+            <li><a href="<?= base_url()?>client/edit_profile.php">
+              <?= htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) ?></a></li>
           <?php else: ?>
-            <li><a href="<?= base_url()?>signin" class="btn-signin">
-              <i class="fa-solid fa-screwdriver-wrench"></i> Sign In
-            </a></li>
+            <li>
+              <a href="<?= base_url() ?>signin" class="btn-signin">
+                <i class="fa-solid fa-screwdriver-wrench"></i> Sign In
+              </a>
+            </li>
           <?php endif; ?>
-          
-          <!-- Language Selector Dropdown -->
           <li class="dropdown language-selector">
-            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
               <i class="bi bi-translate"></i>
               <span class="d-none d-md-inline">EN</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li><a class="dropdown-item active" href="#"><i class="bi bi-check-lg me-2"></i>English</a></li>
               <li><a class="dropdown-item" href="#"><span class="me-2">العربية</span></a></li>
-              <li><a class="dropdown-item" href="#"><span class="me-2">हिन्दी</span></a></li>
             </ul>
           </li>
         </ul>
@@ -467,55 +450,66 @@
     </div>
   </header>
 
-  <!-- Main Content Container -->
-  <div class="main-container">
-    <!-- Your page content goes here -->
-  </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      // Preloader animation
-      setTimeout(function() {
-        document.querySelector('.indus-preloader').classList.add('indus-hidden');
-        setTimeout(function() {
-          document.querySelector('.indus-preloader').style.display = 'none';
-        }, 800);
-      }, 3500);
-      
-      // Header scroll effect
-      const header = document.querySelector('.header');
-      
-      window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-          header.classList.add('scrolled');
-        } else {
-          header.classList.remove('scrolled');
-        }
-      });
-      
-      // Initialize scroll state on page load
-      if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-      }
-
-      // Language selector functionality
-      const languageItems = document.querySelectorAll('.language-selector .dropdown-item');
-      languageItems.forEach(item => {
-        item.addEventListener('click', function(e) {
-          e.preventDefault();
-          // Remove active class from all items
-          languageItems.forEach(i => i.classList.remove('active'));
-          // Add active class to clicked item
-          this.classList.add('active');
-          // Update the displayed language code
-          const langCode = this.textContent.trim().substring(0, 2).toUpperCase();
-          document.querySelector('.language-selector .dropdown-toggle span').textContent = langCode;
-        });
-      });
-    });
-  </script>
+  <!-- [Your page content goes here…] -->
 
   <!-- Vendor JS Files -->
   <script src="<?= base_url()?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="<?= base_url()?>assets/vendor/aos/aos.js"></script>
   <script src="<?= base_url()?>assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Google Translate Widget -->
+  <script>
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,ar',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <!-- Preloader, Scroll, and Language Switch Logic -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Preloader animation
+      setTimeout(function () {
+        const preloader = document.querySelector('.indus-preloader');
+        if (preloader) {
+          preloader.classList.add('indus-hidden');
+          setTimeout(() => { preloader.style.display = 'none'; }, 800);
+        }
+      }, 3500);
+
+      // Header scroll effect
+      const header = document.querySelector('.header');
+      window.addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', window.scrollY > 50);
+      });
+      if (window.scrollY > 50) header.classList.add('scrolled');
+
+      // Language selector event handling
+      const langItems = document.querySelectorAll(".language-selector .dropdown-item");
+      langItems.forEach(item => {
+        item.addEventListener("click", function (e) {
+          e.preventDefault();
+          langItems.forEach(i => i.classList.remove("active"));
+          this.classList.add("active");
+
+          const langText = this.textContent.trim().toLowerCase();
+          const langCode = /arabic|العربية/.test(langText) ? "ar" : "en";
+
+          const toggleSpan = document.querySelector(".language-selector .dropdown-toggle span");
+          if (toggleSpan) toggleSpan.textContent = langCode.toUpperCase();
+
+          // Trigger Google Translate
+          const combo = document.querySelector("select.goog-te-combo");
+          if (combo) {
+            combo.value = langCode;
+            combo.dispatchEvent(new Event("change"));
+          }
+        });
+      });
+    });
+  </script>

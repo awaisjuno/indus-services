@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'config/config.php';
 include 'temp/header.php';
 ?>
@@ -169,7 +170,7 @@ include 'temp/header.php';
                 <p class="lead mb-0">Book your service today and let us take care of your home maintenance needs.</p>
             </div>
             <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
-                <a href="contact.php" class="btn btn-light btn-lg px-4">Contact Us</a>
+                <a href="<?= base_url()?>#contact" class="btn btn-light btn-lg px-4">Contact Us</a>
             </div>
         </div>
     </div>

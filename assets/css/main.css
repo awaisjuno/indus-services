@@ -2624,6 +2624,27 @@ section,
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px; /* width of the scrollbar */
+  background: transparent; /* make scrollbar background transparent */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* track color */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #fdc411; /* scrollbar color */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e0aa0b; /* darker shade on hover */
+}
+
+
 .contact .contact-form-container h3 {
   font-size: 24px;
   font-weight: 700;

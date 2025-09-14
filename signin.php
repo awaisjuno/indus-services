@@ -29,7 +29,7 @@
                 <button type="submit" name="signin" class="btn btn-primary btn-center">Sign In</button>
                 
                 <div class="auth-footer">
-                    <p>Don't have an account? <a href="signup">Register here</a></p>
+                    <p>Don't have an account? <a href="signup.php">Register here</a></p>
                 </div>
             </form>
 
@@ -51,12 +51,22 @@
                             // Login successful
                             $_SESSION['user_id'] = $user['user_id'];
                             $_SESSION['email'] = $user['email'];
-                            $_SESSION['role'] = $user['status'];
+                            $_SESSION['role'] = $user['role'];
 
                             session_write_close();
 
-                            echo "<script>alert('Login successful'); window.location.href='index';</script>";
-                            exit();
+                            if($user['role'] == 'admin') {
+                                
+                                echo "<script>window.open('". base_url() ."admin/dashboard.php', '_self')</script>";
+                                
+                            } else if($user['role'] == 'user') {
+                                
+                                echo "<script>window.open('". base_url() ."client/dashboard.php', '_self')</script>";
+                                
+                            }
+
+                            //echo "<script>window.location.href='client/dashboard.php';</script>";
+                            //exit();
                         } else {
                             echo "<script>alert('Incorrect password'); window.location.href='signin.php';</script>";
                             exit();
