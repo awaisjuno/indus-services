@@ -5,6 +5,26 @@
     include '../config/session.php';
     include 'temp.php';
 
+    $order_id = $_GET['order_id'];
+
+
+    $sql = "
+    SELECT 
+        o.*, 
+        u.*, 
+        ud.*, 
+        s.*
+    FROM `order` AS o
+    JOIN `user` AS u ON o.user_id = u.user_id
+    JOIN `user_detail` AS ud ON u.user_id = ud.user_id
+    JOIN `sub_category` AS s ON o.sub_id = s.sub_id
+    WHERE o.order_id = '$order_id'
+    ";
+
+    $result = mysqli_query($con, $sql);
+
+    $order = mysqli_fetch_assoc($result);
+
 ?>
 
 <style>
@@ -397,22 +417,22 @@
                             <div class="order-info-grid">
                                 <div class="info-group">
                                     <div class="info-label">Order Name</div>
-                                    <div class="info-value">Deep Cleaning Service</div>
+                                    <div class="info-value"><?= $order['sub_category']?></div>
                                 </div>
                                 
                                 <div class="info-group">
                                     <div class="info-label">Order Date</div>
-                                    <div class="info-value">Oct 15, 2023</div>
+                                    <div class="info-value"><?= $order['selected_date']?></div>
                                 </div>
                                 
                                 <div class="info-group">
                                     <div class="info-label">Service Time</div>
-                                    <div class="info-value">10:00 AM - 12:00 PM</div>
+                                    <div class="info-value"><?= $order['selected_time']?></div>
                                 </div>
                                 
                                 <div class="info-group">
                                     <div class="info-label">Service Duration</div>
-                                    <div class="info-value">2 Hours</div>
+                                    <div class="info-value"></div>
                                 </div>
                                 
                                 <div class="info-group">
@@ -432,17 +452,7 @@
                                 
                                 <div class="info-group">
                                     <div class="info-label">Total Amount</div>
-                                    <div class="info-value">$75.00</div>
-                                </div>
-                            </div>
-                            
-                            <div class="customer-section">
-                                <div class="customer-avatar">
-                                    <i class="fas fa-user"></i>
-                                </div>
-                                <div class="customer-info">
-                                    <h3>First Name Last Name</h3>
-                                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                                    <div class="info-value"><?= $order['price']?> AED</div>
                                 </div>
                             </div>
                         </div>
@@ -459,8 +469,8 @@
                                         <i class="fas fa-broom"></i>
                                     </div>
                                     <div class="service-details">
-                                        <h3>Deep Cleaning Service</h3>
-                                        <p>Our deep cleaning service includes thorough cleaning of all areas, including hard-to-reach spaces, ensuring your home is spotless and sanitized.</p>
+                                        <h3><?= $order['sub_category']?></h3>
+                                        <p><?= $order['description']?></p>
                                     </div>
                                 </div>
                             </div>

@@ -26,6 +26,11 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label>Phase *</label>
+                        <input type="text" id="phase" class="form-input" name="phase" placeholder="Enter phase">
+                    </div>
                     
                     <div class="form-group">
                         <label class="form-label" for="cityDescription">Description</label>
@@ -48,10 +53,11 @@
                     if (isset($_POST['save'])) {
                         $name = mysqli_real_escape_string($con, $_POST['city_name']);
                         $code = mysqli_real_escape_string($con, $_POST['city_code']);
+                        $phase = mysqli_real_escape_string($con, $_POST['phase']);
                         $des  = mysqli_real_escape_string($con, $_POST['des']);
             
-                        $insert = "INSERT INTO city (city_name, city_code, status, is_active, is_delete) 
-                                   VALUES ('$name', '$code', '1', '1', '0')";
+                        $insert = "INSERT INTO city (city_name, city_code, phase status, is_active, is_delete) 
+                                   VALUES ('$name', '$code', '$phase', '1', '1', '0')";
             
                         $run = mysqli_query($con, $insert);
             

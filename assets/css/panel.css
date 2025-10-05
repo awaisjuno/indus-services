@@ -24,6 +24,10 @@
             overflow-x: hidden;
         }
 
+        .heading {
+            color: #e6b00e; 
+        }
+
         h1, h2, h3, h4, h5, h6 {
             font-family: 'Plus Jakarta Sans', sans-serif;
             font-weight: 600;
@@ -38,7 +42,7 @@
         /* Sidebar */
         .sidebar {
             width: var(--sidebar-width);
-            background: var(--primary);
+            background: #2c3e50;
             color: white;
             height: 100vh;
             position: fixed;
@@ -70,15 +74,15 @@
         }
 
         .menu-item {
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: var(--transition);
-            font-weight: 500;
-            font-size: 14.5px;
-            border-left: 4px solid transparent;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: var(--transition);
+        border-left: 4px solid transparent;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
         }
 
         .menu-item:hover, .menu-item.active {

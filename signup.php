@@ -1,8 +1,9 @@
-    <?php 
-        include 'config/config.php';
-        include 'temp/header.php';
-    ?>
-
+<?php 
+    session_start();
+    include 'config/config.php';
+    include 'config/load-header.php';
+    include 'temp/header.php';
+?>
     <section class="auth-section">
         <div class="container">
             <div class="auth-form">
@@ -63,6 +64,7 @@
                     $email            = mysqli_real_escape_string($con, trim($_POST['email']));
                     $password         = trim($_POST['password']);
                     $confirm_password = trim($_POST['confirm_password']);
+                    $status = 0;
 
                     if ($password !== $confirm_password) {
                         echo "<script>alert('Passwords do not match'); window.location.href='signup.php';</script>";
@@ -79,9 +81,9 @@
 
                     mysqli_autocommit($con, false);
                     $error = false;
-
+                    
                     $insert_user = mysqli_query($con, "INSERT INTO user (email, password, status, role) 
-                        VALUES ('$email', '$hashed_password', '1', 'user')");
+                        VALUES ('$email', '$hashed_password', '$status', 'user')");
 
                     if ($insert_user) {
                         $user_id = mysqli_insert_id($con);

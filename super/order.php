@@ -4,40 +4,40 @@
     include 'temp.php';
     
     // Fetch orders with user, sub_category & city details
-    $sel = "
-        SELECT 
-            o.order_id,
-            o.user_id,
-            o.sub_id,
-            o.duration,
-            o.selected_date,
-            o.selected_time,
-            o.additional,
-            o.payment_mode,
-            o.price,
-            o.status,
-            o.code,
-            u.first_name,
-            u.last_name,
-            u.mobile,
-            u.img AS user_img,
-            s.sub_category,
-            s.service_type,
-            s.price AS sub_price,
-            s.img AS sub_img,
-            c.city_code
-        FROM `order` o
-        LEFT JOIN user_detail u 
-            ON o.user_id = u.user_id AND u.is_active='1' AND u.is_delete='0'
-        LEFT JOIN sub_category s 
-            ON o.sub_id = s.sub_id AND s.is_active='1' AND s.is_delete='0'
-        LEFT JOIN order_detail od 
-            ON od.order_id = o.order_id AND od.is_active='1' AND od.is_delete='0'
-        LEFT JOIN city c 
-            ON od.city = c.city_id AND c.is_active='1' AND c.is_delete='0'
-        WHERE o.is_active='1' AND o.is_delete='0'
-        ORDER BY o.order_id DESC
-    ";
+$sel = "
+    SELECT 
+        o.order_id,
+        o.user_id,
+        o.sub_id,
+        o.duration,
+        o.selected_date,
+        o.selected_time,
+        o.additional,
+        o.payment_mode,
+        o.price,
+        o.status,
+        o.code,
+        u.first_name,
+        u.last_name,
+        u.mobile,
+        u.img AS user_img,
+        s.sub_category,
+        s.price AS sub_price,
+        s.img AS sub_img,
+        c.city_code
+    FROM `order` o
+    LEFT JOIN user_detail u 
+        ON o.user_id = u.user_id AND u.is_active='1' AND u.is_delete='0'
+    LEFT JOIN sub_category s 
+        ON o.sub_id = s.sub_id AND s.is_active='1' AND s.is_delete='0'
+    LEFT JOIN order_detail od 
+        ON od.order_id = o.order_id AND od.is_active='1' AND od.is_delete='0'
+    LEFT JOIN city c 
+        ON od.city = c.city_id AND c.is_active='1' AND c.is_delete='0'
+    WHERE o.is_active='1' AND o.is_delete='0'
+    ORDER BY o.order_id DESC
+";
+
     $run = mysqli_query($con, $sel) or die("Query Error: " . mysqli_error($con));
 ?>
 <!---------------- CSS Styles ---------------->

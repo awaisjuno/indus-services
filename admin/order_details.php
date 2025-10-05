@@ -6,16 +6,24 @@
     $order_id = $_GET['order_id'] ?? null;
 
     $order = "
-SELECT 
-    o.order_id, o.code, o.selected_date, o.selected_time, o.additional, o.status,
-    u.first_name, u.last_name, u.mobile,
-    od.order_detail_id, od.code AS detail_code, od.full_name, od.email, od.phone,
-    od.area, od.city, c.city_name, od.option, od.note
-FROM `order` o
-LEFT JOIN user_detail u ON o.user_id = u.user_id
-LEFT JOIN order_detail od ON o.order_id = od.order_id
-LEFT JOIN city c ON od.city = c.city_id
-WHERE o.order_id = $order_id
+        SELECT 
+            o.order_id, o.code, o.selected_date, o.selected_time, o.additional, o.status,
+            u.first_name, u.last_name, u.mobile,
+            od.order_detail_id, od.code AS detail_code, od.full_name, od.email, od.phone,
+            od.area, od.city AS city_id, 
+            c.city_name, c.city_code,
+            od.option, od.note,
+            s.sub_category,
+            ua.assign_id, ua.status AS assign_status,
+            au.first_name AS assign_first_name, au.last_name AS assign_last_name, au.mobile AS assign_mobile, au.img AS assign_img
+        FROM `order` o
+        LEFT JOIN user_detail u ON o.user_id = u.user_id
+        LEFT JOIN order_detail od ON o.order_id = od.order_id
+        LEFT JOIN city c ON od.city = c.city_id
+        LEFT JOIN sub_category s ON o.sub_id = s.sub_id
+        LEFT JOIN order_assign ua ON o.order_id = ua.order_id
+        LEFT JOIN user_detail au ON ua.user_id = au.user_id
+        WHERE o.order_id = $order_id
     ";
 
     $run = mysqli_query($con, $order);
@@ -67,28 +75,36 @@ WHERE o.order_id = $order_id
                         <table class="table">
 
                             <tr>
-                                <th>Order ID</th>
-                                <td><?= $order_row['code']?></td>
-                            </tr>
-
-                            <tr>
-                                <th>Purhase Date</th>
-                                <td><?= date("M d, Y", strtotime($order_row['selected_date'])) ?></td>
-                            </tr>
-
-                            <tr>
-                                <th>Order Status</th>
-                                <td>Serviced</td>
-                            </tr>
-
-                            <tr>
-                                <th>Contact Buyer</th>
+                                <th>Client Name *</th>
                                 <td><?= $order_row['first_name']?> <?= $order_row['last_name']?></td>
                             </tr>
 
                             <tr>
-                                <th>Buyer Phone</th>
+                                <th>Client Email * </th>
+                                <td><?= $order_row['email']?></td>
+                            </tr>
+
+                            <tr>
+                                <th>Client Mobile * </th>
                                 <td><?= $order_row['mobile']?></td>
+                            </tr>
+
+                            <tr>
+                                <th>Service Categoy *</th>
+                                <td> <?= $order_row['sub_category']?></td>
+                            </tr>
+
+                            <tr>
+                                <th>Technician *</th>
+                                <td>
+                                    <?php 
+                                        if (!empty($row['assign_first_name'])) {
+                                            echo $row['assign_first_name'] . ' ' . $row['assign_last_name'] . ' (' . $row['assign_mobile'] . ')';
+                                        } else {
+                                            echo "Not Assigned";
+                                        }
+                                    ?>
+                                </td>
                             </tr>
 
                         </table>
@@ -98,22 +114,21 @@ WHERE o.order_id = $order_id
                         <table class="table">
 
                             <tr>
-                                <th>Service Type</th>
-                                <td>In-Home</td>
+                                <th>Selected Time *</th>
+                                <td><?= $order_row['selected_time']?></td>
                             </tr>
                             <tr>
-                                <th>Service Location</th>
-                                <td><?= $order_row['area']?> <?= $order_row['city_name']?></td>
+                                <th>Selected Date</th>
+                                <td><?= $order_row['selected_date']?></td>
                             </tr>
-
                             <tr>
-                                <td colspan="2">
-                                    <span class="label">Appointment Notes *</span>
-                                    <textarea readonly class="form-control" rows="4"><?= $order_row['additional'] ?></textarea>
-                                    <button style="padding: 5px; border-radius: 5px;">Submit</button>
-                                </td>
+                                <th>City Code</th>
+                                <td><?= $order_row['city_code']?></td>
                             </tr>
-
+                            <tr>
+                                <th>Address</th>
+                                <td><?= $order_row['area']?></td>
+                            </tr>
 
                         </table>
 

@@ -64,6 +64,15 @@
 
                 <?php 
                     if (isset($_POST['assign'])) {
+
+                        //Update the Order Table is_assgin
+                        $update = "UPDATE `order` SET is_assgin = 1 WHERE order_id = '$order_id'";
+                        $run_update = mysqli_query($con, $update);
+
+                        if(!$run_update) {
+                            echo "<script>alert('Some thing Went wrong.')</script>";
+                        }
+ 
                         $tech_id = $_POST['technician'] ?? null;
 
                         if ($order_id && $tech_id) {

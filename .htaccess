@@ -1,20 +1,30 @@
 Options -MultiViews
 RewriteEngine On
 
-# Serve existing files or folders directly
+# If request is for an existing file or folder, serve it directly
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Rewrite "service/{slug}"
+# --- Custom routes ---
+# /service/slug → service.php?slug=slug
 RewriteRule ^service/([a-zA-Z0-9-]+)/?$ service.php?slug=$1 [QSA,L]
 
-# Rewrite "options/{type}/{category}" (two parameters)
-RewriteRule ^options/([a-zA-Z0-9-]+)/([a-zA-Z0-9-]+)/?$ options.php?type=$1&category=$2 [QSA,L]
+# /options/type/Maintenance → options.php?category=Maintenance
+RewriteRule ^options/([a-zA-Z0-9-]+)/([a-zA-Z0-9-]+)/?$ options.php?category=$2 [QSA,L]
 
-# Rewrite "options/{slug}" (fallback for one parameter)
-RewriteRule ^options/([a-zA-Z0-9-]+)/?$ options.php?slug=$1 [QSA,L]
+# /options/Maintenance → options.php?category=Maintenance
+RewriteRule ^options/([a-zA-Z0-9-]+)/?$ options.php?category=$1 [QSA,L]
 
-
-# Rewrite "signin"
+# /signin → signin.php
 RewriteRule ^signin/?$ signin.php [QSA,L]
+
+
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+indus/([^/.]+)\.php[?\s] [NC]
+RewriteRule ^ %1 [R=301,L]
+
+
+# --- Generic rule to remove .php ---
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^([^/]+)/?$ $1.php [QSA,L]

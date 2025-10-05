@@ -13,10 +13,9 @@
           <p><strong>Email:</strong> <span>info@indusservices.ae</span></p>
         </div>
         <div class="social-links d-flex mt-4">
-          <a href=""><i class="bi bi-twitter-x"></i></a>
-          <a href=""><i class="bi bi-facebook"></i></a>
-          <a href=""><i class="bi bi-instagram"></i></a>
-          <a href=""><i class="bi bi-linkedin"></i></a>
+          <a href="https://www.facebook.com/Indusservices.ae/"><i class="bi bi-facebook"></i></a>
+          <a href="https://www.instagram.com/indusservices.ae/?next=%2F"><i class="bi bi-instagram"></i></a>
+          <a href="https://www.linkedin.com/in/indusservices/"><i class="bi bi-linkedin"></i></a>
         </div>
       </div>
 
@@ -24,22 +23,32 @@
       <div class="col-lg-2 col-md-3 col-6 footer-links">
         <h4>Useful Links</h4>
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">About us</a></li>
-          <li><a href="#">Services</a></li>
-          <li><a href="#">Terms of service</a></li>
-          <li><a href="#">Privacy policy</a></li>
+          <li><a href="<?= base_url()?>">Home</a></li>
+          <li><a href="<?= base_url()?>about">About us</a></li>
+          <li><a href="<?= base_url()?>services">Services</a></li>
+          <li><a href="<?= base_url()?>terms-conditions">Terms of service</a></li>
+          <li><a href="<?= base_url()?>privacy-policy">Privacy policy</a></li>
         </ul>
       </div>
 
       <div class="col-lg-2 col-md-3 col-6 footer-links">
         <h4>Our Services</h4>
         <ul>
-          <li><a href="#">Pest Control</a></li>
-          <li><a href="#">Maid Service(Hourly)</a></li>
-          <li><a href="#">Deep Cleaning</a></li>
-          <li><a href="#">Sofa Cleaning</a></li>
-          <li><a href="#">Carpet Cleaning</a></li>
+          <?php 
+            // Fetch Services
+            $fetch = "SELECT * FROM service ORDER BY service_id DESC LIMIT 4";
+            $run = mysqli_query($con, $fetch);
+
+            while($row = mysqli_fetch_assoc($run)) {
+
+              $slug = !empty($row['slug']) ? $row['slug'] : $row['service_id'];
+                
+                echo "<li>
+                        <a href='#'>" . htmlspecialchars($row['service_name']) . "</a>
+                      </li>";
+            }
+          ?>
+
         </ul>
       </div>
 
@@ -62,9 +71,6 @@
           <li><a href="#">Remodelling and maintenance</a></li>
           <li><a href="#">Garden Maintenance</a></li>
           <li><a href="#">Movers and Packers</a></li>
-          <li><a href="#">One Item Move</a></li>
-          <li><a href="#">Storage(Temperature control)</a></li>
-          <li><a href="#">Junk Removal</a></li>
         </ul>
       </div>
     </div>
@@ -90,3 +96,6 @@
 
 <!-- Main JS File -->
 <script src="<?= base_url()?>assets/js/main.js"></script>
+
+</body>
+</html>

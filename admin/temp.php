@@ -1,16 +1,46 @@
+<script>
+function checkNotifications() {
+    fetch("get_notifications.php")
+        .then(response => response.text())
+        .then(count => {
+            count = parseInt(count.trim()) || 0; // ensure it's a number
 
+            if (count > 0) {
+                document.title = `(${count}) Indus Services - Admin Panel`;
+
+                // Play sound if new orders come
+                if (!window.lastCount || count > window.lastCount) {
+                    let audio = new Audio("assets/mixkit-tile-game-reveal-960.wav");
+                    audio.play();
+                }
+            } else {
+                document.title = "Indus Services - Admin Panel";
+            }
+
+            window.lastCount = count; // store last count
+        })
+        .catch(error => console.error("Error fetching notifications:", error));
+}
+
+// Run every 5 seconds
+setInterval(checkNotifications, 5000);
+checkNotifications(); // run immediately
+</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indus Services - Admin Panel</title>
+    <title id="pageTitle">Indus Services - Admin Panel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!--Font awesome cdn--->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
         :root {
@@ -698,17 +728,28 @@
                     <i class="fas fa-shopping-cart"></i>
                     <span>All Orders</span>
                 </a>
+                <a href="<?= base_url()?>admin/manullay-order.php" class="menu-item">
+                    <i class="fas fa-ticket-alt"></i>
+                    <span>Manullay Order</span>
+                </a>
                 <a href="<?= base_url()?>admin/reschedule.php" class="menu-item">
                     <i class="fas fa-calendar-alt"></i>
                     <span>Reschedule Order</span>
+                </a>
+                <a href="<?= base_url()?>admin/technician-job.php" class="menu-item">
+                    <i class="fas fa-tools"></i>
+                    <span>Technician Job</span>
                 </a>
                 <a href="<?= base_url()?>admin/complaints.php" class="menu-item">
                     <i class="fas fa-exclamation-circle"></i>
                     <span>All Complaints</span>
                 </a>
-                <a href="<?= base_url()?>signout.php" class="menu-item">
+                <a href="<?= base_url()?>signout" class="menu-item">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
                 </a>
             </nav>
         </aside>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

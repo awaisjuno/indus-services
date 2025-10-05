@@ -4,10 +4,11 @@
     include 'config/config.php';
     include 'temp/header.php';
     
-    $service_type = $_GET['type'] ?? null;
+    //$service_type = $_GET['type'] ?? null;
     $category = $_GET['category'] ?? null;
     
     $category = ucwords(str_replace('-', ' ', $category));
+    //$category = "Maintenance";
 
     $sel = "SELECT * FROM sub_category WHERE sub_category='$category'";
     
@@ -333,7 +334,276 @@
     .theme-accent {
         color: var(--primary);
     }
+
+
+
+
+:root {
+    --theme-primary: #fdc411;
+    --theme-primary-dark: #e6b00f;
+    --theme-primary-light: #fde8a1;
+    --theme-text: #2c3e50;
+    --theme-text-light: #6c757d;
+    --theme-bg: #f8f9fa;
+    --theme-border: #e9ecef;
+}
+
+.service-selection-container {
+    background: var(--theme-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin: 1.5rem 0;
+}
+
+.form-section {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--theme-border);
+}
+
+.form-section:last-child {
+    border-bottom: none;
+}
+
+.selection-title {
+    color: var(--theme-text);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+/* Service Option Groups - 3 options per row */
+.service-option-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+.service-option {
+    width: 100%;
+}
+
+.service-option input[type="checkbox"],
+.service-option input[type="radio"] {
+    display: none;
+}
+
+.service-option label {
+    display: block;
+    padding: 0.75rem 0.5rem;
+    background: white;
+    border: 2px solid var(--theme-border);
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    color: var(--theme-text);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    min-height: 50px;
+}
+
+.service-option label:hover {
+    border-color: var(--theme-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(253, 196, 17, 0.1);
+}
+
+.service-option input[type="checkbox"]:checked + label,
+.service-option input[type="radio"]:checked + label {
+    background: var(--theme-primary);
+    color: var(--theme-text);
+    border-color: var(--theme-primary);
+    box-shadow: 0 4px 8px rgba(253, 196, 17, 0.2);
+}
+
+.yes-option input[type="radio"]:checked + label {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.no-option input[type="radio"]:checked + label {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+
+/* Compact Form Controls */
+.form-group-custom {
+    margin-bottom: 0.75rem;
+}
+
+.form-control-custom, .form-select-custom {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    border: 2px solid var(--theme-border);
+    background: white;
+    transition: all 0.3s ease;
+    color: var(--theme-text);
+    height: 45px;
+}
+
+.form-control-custom:focus, .form-select-custom:focus {
+    outline: none;
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 0 0.2rem rgba(253, 196, 17, 0.25);
+}
+
+.textarea-custom {
+    resize: vertical;
+    min-height: 80px;
+    height: auto;
+}
+
+.file-input {
+    padding: 0.5rem 0.8rem;
+    height: auto;
+}
+
+.file-input::file-selector-button {
+    background: var(--theme-primary);
+    color: var(--theme-text);
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 5px;
+    margin-right: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85rem;
+}
+
+.file-input::file-selector-button:hover {
+    background: var(--theme-primary-dark);
+}
+
+/* Date and Time Inputs */
+input[type="date"].form-control-custom,
+input[type="time"].form-control-custom {
+    padding: 0.5rem 0.8rem;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .service-option-group {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .service-option-group {
+        grid-template-columns: 1fr;
+    }
+    
+    .service-selection-container {
+        padding: 1rem;
+    }
+    
+    .form-control-custom, .form-select-custom {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    .selection-title {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .service-selection-container {
+        padding: 0.75rem;
+        margin: 1rem 0;
+    }
+    
+    .form-section {
+        padding: 0.75rem 0;
+    }
+    
+    .service-option label {
+        padding: 0.6rem 0.4rem;
+        font-size: 0.85rem;
+        min-height: 45px;
+    }
+}
+
+/* Single Selection Styles */
+.single-selection .service-option-group {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.single-selection .service-option input[type="radio"]:checked + label {
+    background: var(--theme-primary);
+    color: var(--theme-text);
+    border-color: var(--theme-primary);
+    box-shadow: 0 4px 8px rgba(253, 196, 17, 0.2);
+}
+
+/* Required field indicator */
+.required-field::after {
+    content: " *";
+    color: #dc3545;
+}
 </style>
+
+<script>
+    // Add visual feedback when options are selected
+document.addEventListener('DOMContentLoaded', function() {
+    const serviceOptions = document.querySelectorAll('.service-option input');
+    
+    serviceOptions.forEach(input => {
+        // Set initial state
+        if (input.checked) {
+            input.parentElement.classList.add('selected');
+        }
+        
+        // Add change event listener
+        input.addEventListener('change', function() {
+            // For checkboxes
+            if (this.type === 'checkbox') {
+                if (this.checked) {
+                    this.parentElement.classList.add('selected');
+                } else {
+                    this.parentElement.classList.remove('selected');
+                }
+            }
+            
+            // For radio buttons
+            if (this.type === 'radio') {
+                // Remove selected class from all options in the same group
+                const groupName = this.name;
+                document.querySelectorAll(`input[name="${groupName}"]`).forEach(radio => {
+                    radio.parentElement.classList.remove('selected');
+                });
+                
+                // Add selected class to the checked option
+                if (this.checked) {
+                    this.parentElement.classList.add('selected');
+                }
+            }
+        });
+    });
+    
+    // Add focus effects for form controls
+    const formControls = document.querySelectorAll('.form-control-custom, .form-select-custom');
+    formControls.forEach(control => {
+        control.addEventListener('focus', function() {
+            this.parentElement.classList.add('focused');
+        });
+        
+        control.addEventListener('blur', function() {
+            this.parentElement.classList.remove('focused');
+        });
+    });
+});
+</script>
 
 <div class="container animated">
     <h1>Book Your <span class="theme-accent">Service</span></h1>
@@ -345,49 +615,109 @@
             
             <form method="POST">
             
+                <!-- Service-specific dynamic inputs -->
+                <div class="service-selection-container">
+                    <?php 
+                    // Reset the pointer to loop through inputs again
+                    mysqli_data_seek($run_input, 0);
+                    while ($input = mysqli_fetch_assoc($run_input)) { ?>
+                        <div class="form-section mb-4">
+                            <h3 class="selection-title"><?= htmlspecialchars($input['attribute_name']) ?></h3>
 
-<!-- Service-specific dynamic inputs -->
-<?php while ($input = mysqli_fetch_assoc($run_input)) { ?>
-    <div class="form-group">
-        <label><?= htmlspecialchars($input['attribute_name']) ?></label>
+                            <?php if ($input['input_type'] == 'text') { ?>
+                                <div class="form-group-custom">
+                                    <input type="text" name="attr_<?= $input['id'] ?>" class="form-control-custom" placeholder="Enter <?= htmlspecialchars($input['attribute_name']) ?>">
+                                </div>
 
-        <?php if ($input['input_type'] == 'text') { ?>
-            <input type="text" name="attr_<?= $input['id'] ?>" class="form-control">
+                            <?php } elseif ($input['input_type'] == 'textarea') { ?>
+                                <div class="form-group-custom">
+                                    <textarea name="attr_<?= $input['id'] ?>" class="form-control-custom textarea-custom" rows="4" placeholder="Describe <?= htmlspecialchars($input['attribute_name']) ?>"></textarea>
+                                </div>
 
-        <?php } elseif ($input['input_type'] == 'textarea') { ?>
-            <textarea name="attr_<?= $input['id'] ?>" class="form-control"></textarea>
+                            <?php } elseif ($input['input_type'] == 'select') { 
+                                $options = explode(',', $input['options']); ?>
+                                <div class="form-group-custom">
+                                    <select name="attr_<?= $input['id'] ?>" class="form-select-custom">
+                                        <option value="">Please Select</option>
+                                        <?php foreach ($options as $option) { ?>
+                                            <option value="<?= trim($option) ?>"><?= trim($option) ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
 
-        <?php } elseif ($input['input_type'] == 'select') { 
-            $options = explode(',', $input['options']); ?>
-            <select name="attr_<?= $input['id'] ?>" class="form-control">
-                <option value="">Please Select</option>
-                <?php foreach ($options as $option) { ?>
-                    <option value="<?= trim($option) ?>"><?= trim($option) ?></option>
-                <?php } ?>
-            </select>
+                            <?php } elseif ($input['input_type'] == 'checkbox') { 
+                                // CHANGED: Convert checkbox to radio for single selection
+                                $options = explode(',', $input['options']); ?>
+                                <div class="service-option-group single-selection">
+                                    <?php foreach ($options as $option) { 
+                                        $option_trimmed = trim($option);
+                                        $icon_class = get_icon_for_option($option_trimmed);
+                                        ?>
+                                        <div class="service-option">
+                                            <!-- CHANGED: Changed from checkbox to radio -->
+                                            <input type="radio" name="attr_<?= $input['id'] ?>" value="<?= $option_trimmed ?>" id="attr_<?= $input['id'] ?>_<?= sanitize_id($option_trimmed) ?>">
+                                            <label for="attr_<?= $input['id'] ?>_<?= sanitize_id($option_trimmed) ?>">
+                                                <i class="<?= $icon_class ?> service-icon"></i>
+                                                <?= $option_trimmed ?>
+                                            </label>
+                                        </div>
+                                    <?php } ?>
+                                </div>
 
-        <?php } elseif ($input['input_type'] == 'checkbox') { 
-            $options = explode(',', $input['options']); ?>
-            <?php foreach ($options as $option) { ?>
-                <div class="checkbox-group">
-                    <input type="checkbox" name="attr_<?= $input['id'] ?>[]" value="<?= trim($option) ?>">
-                    <label><?= trim($option) ?></label>
+                            <?php } elseif ($input['input_type'] == 'radio') { 
+                                $options = explode(',', $input['options']); ?>
+                                <div class="service-option-group">
+                                    <?php foreach ($options as $option) { 
+                                        $option_trimmed = trim($option);
+                                        $is_yes_no = is_yes_no_question($input['attribute_name']);
+                                        $option_class = $is_yes_no ? ($option_trimmed === 'Yes' || stripos($option_trimmed, 'yes') !== false ? 'yes-option' : 'no-option') : '';
+                                        $icon_class = get_icon_for_radio($option_trimmed, $is_yes_no);
+                                        ?>
+                                        <div class="service-option <?= $option_class ?>">
+                                            <input type="radio" name="attr_<?= $input['id'] ?>" value="<?= $option_trimmed ?>" id="attr_<?= $input['id'] ?>_<?= sanitize_id($option_trimmed) ?>">
+                                            <label for="attr_<?= $input['id'] ?>_<?= sanitize_id($option_trimmed) ?>">
+                                                <i class="<?= $icon_class ?>"></i>
+                                                <?= $option_trimmed ?>
+                                            </label>
+                                        </div>
+                                    <?php } ?>
+                                </div>
+
+                            <?php } elseif ($input['input_type'] == 'number') { ?>
+                                <div class="form-group-custom">
+                                    <input type="number" name="attr_<?= $input['id'] ?>" class="form-control-custom" placeholder="Enter <?= htmlspecialchars($input['attribute_name']) ?>">
+                                </div>
+
+                            <?php } elseif ($input['input_type'] == 'email') { ?>
+                                <div class="form-group-custom">
+                                    <input type="email" name="attr_<?= $input['id'] ?>" class="form-control-custom" placeholder="Enter <?= htmlspecialchars($input['attribute_name']) ?>">
+                                </div>
+
+                            <?php } elseif ($input['input_type'] == 'tel') { ?>
+                                <div class="form-group-custom">
+                                    <input type="tel" name="attr_<?= $input['id'] ?>" class="form-control-custom" placeholder="Enter <?= htmlspecialchars($input['attribute_name']) ?>">
+                                </div>
+
+                            <?php } elseif ($input['input_type'] == 'date') { ?>
+                                <div class="form-group-custom">
+                                    <input type="date" name="attr_<?= $input['id'] ?>" class="form-control-custom">
+                                </div>
+
+                            <?php } elseif ($input['input_type'] == 'time') { ?>
+                                <div class="form-group-custom">
+                                    <input type="time" name="attr_<?= $input['id'] ?>" class="form-control-custom">
+                                </div>
+
+                            <?php } elseif ($input['input_type'] == 'file') { ?>
+                                <div class="form-group-custom">
+                                    <input type="file" name="attr_<?= $input['id'] ?>" class="form-control-custom file-input">
+                                </div>
+
+                            <?php } ?>
+                        </div>
+                    <?php } ?>
                 </div>
-            <?php } ?>
-
-        <?php } elseif ($input['input_type'] == 'radio') { 
-            $options = explode(',', $input['options']); ?>
-            <?php foreach ($options as $option) { ?>
-                <div class="checkbox-group">
-                    <input type="radio" name="attr_<?= $input['id'] ?>" value="<?= trim($option) ?>">
-                    <label><?= trim($option) ?></label>
-                </div>
-            <?php } ?>
-        <?php } ?>
-    </div>
-<?php } ?>
-
-
+                
                 <!-- Date and Time Selection -->
                 <div class="form-group">
                     <div class="date-time-group">
@@ -417,7 +747,7 @@
                 <!-- Additional Information -->
                 <div class="form-group">
                     <div class="form-title">Anything else you want to describe</div>
-                    <textarea name="description" placeholder="Please provide any special instructions or details about your cleaning needs..."></textarea>
+                    <textarea name="description" style="height: 200px;" placeholder="Please provide any special instructions or details about your cleaning needs..."></textarea>
                 </div>
                 
                 <!-- Price Calculation -->
@@ -433,12 +763,13 @@
             <?php
 
                 if (isset($_POST['submit'])) {
+
                     $cat_id   = $row['sub_id'] ?? null;
-                    $type     = $_GET['type'] ?? null;
+                    $type     = '.';//$_GET['type'] ?? null;
                     $duration = $_POST['hours'] ?? null;
-                    $date     = $_POST['service_date'] ?? null;
-                    $time     = $_POST['service_time'] ?? null;
-                    $info     = $_POST['notes'] ?? null;
+                    $date     = $_POST['date'] ?? null;
+                    $time     = $_POST['time'] ?? null;
+                    $info     = $_POST['description'] ?? null;
                     $user_id  = $_SESSION['user_id'] ?? null;
                     $status   = 0;
                     $mood     = $_POST['payment_mode'] ?? 'cash';
@@ -451,6 +782,32 @@
                     // Payment mode
                     $payment_mode = ($mood == 'card') ? 1 : 0;
 
+
+                    // ----------------------------
+                    // Fetch buffer settings
+                    // ----------------------------
+                    $buffer_q = "SELECT hour, min FROM buffer 
+                                WHERE sub_id = '$cat_id' AND is_active='1' AND is_delete='0' LIMIT 1";
+                    $buffer_r = mysqli_query($con, $buffer_q);
+                    $buffer   = mysqli_fetch_assoc($buffer_r);
+
+                    $buffer_hour = $buffer['hour'] ?? 0;
+                    $buffer_min  = $buffer['min'] ?? 0;
+
+                    // User selected datetime
+                    $selectedDateTime = strtotime($date . ' ' . $time);
+
+                    // Current time
+                    $now = time();
+
+                    // Required minimum time (now + buffer)
+                    $bufferSeconds = ($buffer_hour * 3600) + ($buffer_min * 60);
+                    $allowedTime   = $now + $bufferSeconds;
+
+                    if ($selectedDateTime < $allowedTime) {
+                        echo "<script>alert('You must schedule at least {$buffer_hour} hour(s) and {$buffer_min} minute(s) from now.');</script>";
+                    }                    
+
                     // Insert order
                     $insert = "INSERT INTO `order` 
                             (user_id, sub_id, type, duration, selected_date, selected_time, additional, payment_mode, status, code, created_at) 
@@ -459,19 +816,15 @@
                     $run = mysqli_query($con, $insert);
 
                     if ($run) {
-                        $order_id = mysqli_insert_id($con); // get last inserted order ID
+                        $order_id = mysqli_insert_id($con);
 
                         // Loop through all POST inputs to find dynamic attributes
                         foreach ($_POST as $key => $value) {
-                            if (strpos($key, 'attr_') === 0) { // only process attributes
+                            if (strpos($key, 'attr_') === 0) {
                                 $attr_id = str_replace('attr_', '', $key);
 
-                                // Handle multiple values (checkboxes)
-                                if (is_array($value)) {
-                                    $attr_value = implode(', ', $value);
-                                } else {
-                                    $attr_value = $value;
-                                }
+                                // Handle multiple values (checkboxes) - NOW SINGLE VALUES ONLY
+                                $attr_value = $value;
 
                                 // Fetch attribute name from category_attribute table
                                 $attr_name = '';
@@ -512,35 +865,68 @@
         
         <div class="price-sidebar">
             
-            <?php if(!$service_type == 'quotation'){ ?>
             <div class="price-card">
                 <div class="price-value"><?= $row['price']?></div>
                 <div class="price-per">for 2 hours service</div>
             </div>
-            <?php }?>
             
+                <?php
 
+                    $discount_q = "SELECT discount FROM discount 
+                                WHERE sub_id = '{$row['sub_id']}' 
+                                AND is_active = '1' 
+                                AND is_delete = '0' 
+                                LIMIT 1";
+                    $discount_r = mysqli_query($con, $discount_q);
+                    $discount_row = mysqli_fetch_assoc($discount_r);
+
+                    $discount_percent = $discount_row['discount'] ?? 0;
+
+                    // --- Price Calculation ---
+                    $base_price = $row['price'];
+                    $discount_amount = ($discount_percent > 0) ? ($base_price * $discount_percent / 100) : 0;
+                    $price_after_discount = $base_price - $discount_amount;
+
+                    // Example: duration fee fixed for now
+                    $duration_fee = 80; 
+                    $subtotal = $price_after_discount + $duration_fee;
+
+                    // VAT 5%
+                    $vat = round($subtotal * 0.05);
+
+                    // Final total
+                    $total = $subtotal + $vat;
+
+                ?>
+                
                 <div class="price-details">
-                    <?php if(!$service_type == 'quotation'){ ?>
                     <div class="price-line">
                         <span>Base Price:</span>
-                        <span><?php echo number_format($row['price']); ?> AED</span>
+                        <?php if ($discount_percent > 0) { ?>
+                            <span>
+                                <del style="color:#888;"><?= number_format($base_price) ?> AED</del>
+                                <?= number_format($price_after_discount) ?> AED
+                                <small style="color:green;">(-<?= $discount_percent ?>%)</small>
+                            </span>
+                        <?php } else { ?>
+                            <span><?= number_format($base_price) ?> AED</span>
+                        <?php } ?>
                     </div>
-                    <?php }?>
+
                     <div class="price-line">
                         <span>Duration (2 hours):</span>
-                        <span>+80 AED</span>
+                        <span>+<?= number_format($duration_fee) ?> AED</span>
                     </div>
+
                     <div class="price-line">
                         <span>VAT (5%):</span>
-                        <span>+9 AED</span>
+                        <span>+<?= number_format($vat) ?> AED</span>
                     </div>
-                    <?php if(!$service_type == 'quotation'){ ?>
+
                     <div class="total-price">
                         <span>Total Amount:</span>
-                        <span>189 AED</span>
+                        <span><?= number_format($total) ?> AED</span>
                     </div>
-                    <?php }?>
                 </div>
                 
                 <div class="notice">
@@ -614,5 +1000,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <?php include 'temp/footer.php';?>
-
-

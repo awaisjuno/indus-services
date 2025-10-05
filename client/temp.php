@@ -51,10 +51,6 @@
                     <i class="fas fa-key"></i>
                     <span>Change Password</span>
                 </a>
-                <a href="<?= base_url()?>client/rescheduled.php" class="menu-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Rescheduled Orders</span>
-                </a>
                 <a href="<?= base_url()?>signout.php" class="menu-item">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>

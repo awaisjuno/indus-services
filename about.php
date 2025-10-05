@@ -1,177 +1,147 @@
 <?php
 session_start();
 include 'config/config.php';
+include 'config/load-header.php';
 include 'temp/header.php';
 ?>
 
 <!-- Hero Section -->
-<section class="about-hero" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;">
+<section class="about-hero">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8 mx-auto text-center">
-                <h1 class="display-4 fw-bold text-white mb-4">ABOUT INDUS SERVICES</h1>
-                <p class="lead text-white mb-0">Your trusted partner for all home service needs in Abu Dhabi</p>
+        <div class="hero-content text-center">
+
+                <h1 class="hero-title">ABOUT INDUS SERVICES</h1>
+                <p class="hero-subtitle">Your trusted partner for all home service needs in Abu Dhabi</p>
+            
+        </div>
+    </div>
+</section>
+
+<!-- Intro Section -->
+<section class="intro-section">
+    <div class="container">
+        <div class="intro-content">
+            <div class="intro-text">
+                <h2>We understand that no two spaces are the same</h2>
+                <p>which is why we offer customized service solutions to reflect each client's unique needs and preferences. Our team of skilled professionals is dedicated to transforming your space into a functional and beautiful environment.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Welcome Section -->
-<section class="py-5">
+<!-- Vision Mission Goal Section -->
+<section class="vmgo-section">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <img src="https://images.unsplash.com/photo-1558002038-1055907df827?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Our Team" class="img-fluid rounded shadow-lg">
-            </div>
-            <div class="col-lg-6">
-                <div class="ps-lg-5">
-                    <h2 class="display-5 fw-bold mb-4">Welcome to Indus Serives</h2>
-                    <p class="lead">Your one-stop destination for all your home service needs.</p>
-                    <p>At Indus Serives, we're on a mission to simplify and elevate your home maintenance and improvement experiences. We bring together skilled professionals and homeowners to create seamless service experiences.</p>
+        <div class="vmgo-grid">
+            <div class="vmgo-card">
+                <div class="vmgo-icon">
+                    <i class="bi bi-eye"></i>
                 </div>
+                <h3>Our Vision</h3>
+                <p>Our vision is to create home environments that not only reflect the unique personalities and aspirations of our clients but also enhance their daily living experience through thoughtful design and exceptional service.</p>
+            </div>
+            
+            <div class="vmgo-card">
+                <div class="vmgo-icon">
+                    <i class="bi bi-bullseye"></i>
+                </div>
+                <h3>Our Mission</h3>
+                <p>Through meticulous attention to detail and a passion for quality service, we aim to deliver home solutions that exceed expectations while maintaining the highest standards of professionalism and reliability.</p>
+            </div>
+            
+            <div class="vmgo-card">
+                <div class="vmgo-icon">
+                    <i class="bi bi-flag"></i>
+                </div>
+                <h3>Our Goal</h3>
+                <p>Our goal is to craft spaces that inspire creativity, foster connection, and promote well-being. We strive to build lasting relationships with our clients through trust, transparency, and exceptional results.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Mission Section -->
-<section class="py-5 bg-light">
+<!-- Crafting Spaces Section -->
+<section class="crafting-section">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
-                <div class="section-icon mb-4">
-                    <i class="bi bi-bullseye display-4 text-primary"></i>
+        <div class="crafting-content">
+            <div class="crafting-text">
+                <h2>Crafting Spaces That Inspire and Function</h2>
+                <p>We believe that great design is a harmonious blend of inspiration and functionality. Our mission is to craft spaces that not only look beautiful but also serve your practical needs, enhancing your quality of life through thoughtful design solutions.</p>
+            </div>
+            <div class="crafting-image">
+                <img src="https://images.unsplash.com/photo-1558002038-1055907df827?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Crafted Spaces">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Highlights -->
+<section class="services-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Our Service Approach</h2>
+            <p>Innovative solutions for your home service needs</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="bi bi-house-door"></i>
                 </div>
-                <h2 class="display-5 fw-bold mb-4">Our Mission</h2>
-                <p class="lead mx-auto" style="max-width: 700px;">At the heart of Indus Serives is a commitment to making home services accessible, reliable, and hassle-free. We believe that everyone deserves a home that's well-maintained, and we're here to connect you with trusted professionals who share our dedication to quality.</p>
+                <h3>Create Spaces That Inspire</h3>
+                <p>Transform your living environment into a source of daily inspiration through our carefully curated service solutions.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="bi bi-gear"></i>
+                </div>
+                <h3>Crafting Interiors That Enhance</h3>
+                <p>Enhance the functionality and aesthetic appeal of your space with our expert interior service solutions.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="bi bi-heart"></i>
+                </div>
+                <h3>Maximizing Comfort and Style</h3>
+                <p>Find the perfect balance between comfort and contemporary style with our personalized approach to home services.</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Why Choose Us Section -->
-<section class="py-5">
+<section class="why-choose-section">
     <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-lg-8 text-center">
-                <h2 class="display-5 fw-bold mb-4">Why Choose Indus Serives?</h2>
-                <p class="lead">We go above and beyond to ensure your complete satisfaction</p>
-            </div>
+        <div class="section-header">
+            <h2>Why Choose Indus Services?</h2>
+            <p>We go above and beyond to ensure your complete satisfaction</p>
         </div>
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-card text-center p-4 h-100">
-                    <div class="feature-icon mb-4">
-                        <i class="bi bi-collection display-4 text-primary"></i>
-                    </div>
-                    <h3 class="h4 mb-3">Diverse Services</h3>
-                    <p>From plumbing and electrical work to home cleaning and renovations, we offer a wide array of services. Whatever your home needs, we have a professional ready to assist.</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-collection"></i>
                 </div>
+                <h3>Diverse Services</h3>
+                <p>From plumbing and electrical work to home cleaning and renovations, we offer a wide array of services. Whatever your home needs, we have a professional ready to assist.</p>
             </div>
             
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-card text-center p-4 h-100">
-                    <div class="feature-icon mb-4">
-                        <i class="bi bi-shield-check display-4 text-primary"></i>
-                    </div>
-                    <h3 class="h4 mb-3">Verified Professionals</h3>
-                    <p>We rigorously vet and verify all service providers to ensure they meet our high standards of quality, professionalism, and reliability. Your satisfaction and safety are our top priorities.</p>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-shield-check"></i>
                 </div>
+                <h3>Verified Professionals</h3>
+                <p>We rigorously vet and verify all service providers to ensure they meet our high standards of quality, professionalism, and reliability. Your satisfaction and safety are our top priorities.</p>
             </div>
             
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-card text-center p-4 h-100">
-                    <div class="feature-icon mb-4">
-                        <i class="bi bi-calendar-check display-4 text-primary"></i>
-                    </div>
-                    <h3 class="h4 mb-3">Easy Booking</h3>
-                    <p>Our user-friendly platform allows you to browse services, compare quotes, and book professionals seamlessly. Say goodbye to the complexities of finding and scheduling home services.</p>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="bi bi-calendar-check"></i>
                 </div>
+                <h3>Easy Booking</h3>
+                <p>Our user-friendly platform allows you to browse services, compare quotes, and book professionals seamlessly. Say goodbye to the complexities of finding and scheduling home services.</p>
             </div>
             
-            <div class="col-md-6 col-lg-3">
-                <div class="feature-card text-center p-4 h-100">
-                    <div class="feature-icon mb-4">
-                        <i class="bi bi-people display-4 text-primary"></i>
-                    </div>
-                    <h3 class="h4 mb-3">Customer-Centric</h3>
-                    <p>Your convenience is our priority. We provide exceptional customer support, address your concerns, and ensure your experience with us is smooth and satisfying.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Vision Section -->
-<section class="py-5 bg-primary text-white">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-                <h2 class="display-5 fw-bold mb-4">Our Vision</h2>
-                <p class="lead">To become the leading home service solution provider in the competitive market and to cherish long-term relationships with our customers.</p>
-                <p>We are committed to meeting and exceeding your expectations, ensuring your complete satisfaction with every service we provide. Our vision drives us to continuously improve and expand our offerings to serve you better.</p>
-            </div>
-            <div class="col-lg-6">
-                <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Our Vision" class="img-fluid rounded shadow-lg">
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Values Section -->
-<section class="py-5">
-    <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-lg-8 text-center">
-                <h2 class="display-5 fw-bold mb-4">Our Core Values</h2>
-                <p class="lead">The principles that guide everything we do</p>
-            </div>
-        </div>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="value-card p-4 h-100 text-center">
-                    <div class="value-icon mb-4">
-                        <i class="bi bi-eye display-4 text-primary"></i>
-                    </div>
-                    <h3 class="h4 mb-3">Transparency</h3>
-                    <p>We believe in open communication and transparency at every step of the service journey. No hidden fees, no surprises - just honest, reliable service.</p>
-                </div>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="value-card p-4 h-100 text-center">
-                    <div class="value-icon mb-4">
-                        <i class="bi bi-award display-4 text-primary"></i>
-                    </div>
-                    <h3 class="h4 mb-3">Quality</h3>
-                    <p>Delivering excellence is non-negotiable. We strive to connect you with professionals who deliver top-notch service that stands the test of time.</p>
-                </div>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="value-card p-4 h-100 text-center">
-                    <div class="value-icon mb-4">
-                        <i class="bi bi-clock-history display-4 text-primary"></i>
-                    </div>
-                    <h3 class="h4 mb-3">Convenience</h3>
-                    <p>Your time is valuable. We aim to make the process of finding and booking home services as quick and convenient as possible, saving you time and stress.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- CTA Section -->
-<section class="py-5 bg-dark text-white">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <h2 class="display-5 fw-bold mb-3 text-heading">Ready to experience the Indus Serives difference?</h2>
-                <p class="lead mb-0">Book your service today and let us take care of your home maintenance needs.</p>
-            </div>
-            <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
-                <a href="<?= base_url()?>#contact" class="btn btn-light btn-lg px-4">Contact Us</a>
-            </div>
         </div>
     </div>
 </section>
@@ -179,80 +149,468 @@ include 'temp/header.php';
 <?php include 'temp/footer.php'; ?>
 
 <style>
-    .text-heading {
-        color: #fff;
-    }
+/* Variables */
+:root {
+    --primary: #2c3e50;
+    --primary-light: #34495e;
+    --accent: #e67e22;
+    --accent-light: #f39c12;
+    --light: #f8f9fa;
+    --dark: #2c3e50;
+    --text: #333333;
+    --text-light: #6c757d;
+    --white: #ffffff;
+    --shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    --radius: 8px;
+}
+
+
+
 /* Hero Section */
 .about-hero {
-    padding: 120px 0;
+    padding: 100px 0 80px;
+    background: var(--light);
+}
+
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-light);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+.hero-cta {
+    display: flex;
+    gap: 1rem;
+}
+
+.hero-image {
     position: relative;
 }
 
-/* Feature Cards */
+.image-container {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.image-container img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    display: block;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(44, 62, 80, 0.3), rgba(230, 126, 34, 0.2));
+}
+
+/* Intro Section */
+.intro-section {
+    padding: 80px 0;
+    background: var(--white);
+}
+
+.intro-content {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.intro-text h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.intro-text p {
+    font-size: 1.125rem;
+    color: var(--text-light);
+    line-height: 1.7;
+}
+
+/* Vision Mission Goal Section */
+.vmgo-section {
+    padding: 80px 0;
+    background: var(--light);
+}
+
+.vmgo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+}
+
+.vmgo-card {
+    background: var(--white);
+    padding: 3rem 2rem;
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.vmgo-card:hover {
+    transform: translateY(-5px);
+}
+
+.vmgo-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.vmgo-icon i {
+    font-size: 2rem;
+    color: var(--white);
+}
+
+.vmgo-card h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--dark);
+}
+
+.vmgo-card p {
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* Crafting Section */
+.crafting-section {
+    padding: 100px 0;
+    background: var(--white);
+}
+
+.crafting-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.crafting-text h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.crafting-text p {
+    font-size: 1.125rem;
+    color: var(--text-light);
+    line-height: 1.7;
+}
+
+.crafting-image img {
+    width: 100%;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+/* Services Section */
+.services-section {
+    padding: 80px 0;
+    background: var(--light);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 1rem;
+}
+
+.section-header p {
+    font-size: 1.125rem;
+    color: var(--text-light);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.service-card {
+    background: var(--white);
+    padding: 2.5rem 2rem;
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+}
+
+.service-icon {
+    width: 70px;
+    height: 70px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+}
+
+.service-icon i {
+    font-size: 1.75rem;
+    color: var(--white);
+}
+
+.service-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--dark);
+}
+
+.service-card p {
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* Why Choose Us Section */
+.why-choose-section {
+    padding: 100px 0;
+    background: var(--white);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
 .feature-card {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
-    border: 1px solid rgba(0,0,0,0.03);
+    background: var(--white);
+    padding: 2.5rem 2rem;
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
 }
 
 .feature-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.feature-icon {
+    width: 70px;
+    height: 70px;
+    background: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
 }
 
 .feature-icon i {
-    color: #fdc411;
+    font-size: 1.75rem;
+    color: var(--white);
 }
 
-/* Value Cards */
-.value-card {
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+.feature-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--dark);
+}
+
+.feature-card p {
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* CTA Section */
+.cta-section {
+    padding: 80px 0;
+    background: var(--primary);
+    color: var(--white);
+    text-align: center;
+}
+
+.cta-content h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.cta-content p {
+    font-size: 1.125rem;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0.9;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    text-decoration: none;
     transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
 }
 
-.value-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+.btn-primary {
+    background: var(--accent);
+    color: var(--white);
 }
 
-.value-icon i {
-    color: #fdc411;
+.btn-primary:hover {
+    background: var(--accent-light);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Section Icons */
-.section-icon i {
-    color: #fdc411;
+.btn-outline {
+    background: transparent;
+    color: var(--white);
+    border-color: var(--white);
 }
 
-/* Primary Color */
-.bg-primary {
-    background-color: #fdc411 !important;
+.btn-outline:hover {
+    background: var(--white);
+    color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.text-primary {
-    color: #fdc411 !important;
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .hero-title {
+        font-size: 3rem;
+    }
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
-    .about-hero {
-        padding: 80px 0;
+    .hero-content,
+    .crafting-content {
+        grid-template-columns: 1fr;
     }
     
-    .display-5 {
+    .hero-title {
         font-size: 2.5rem;
+    }
+    
+    .hero-cta,
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 250px;
+        text-align: center;
+    }
+    
+    .intro-text h2,
+    .section-header h2,
+    .crafting-text h2,
+    .cta-content h2 {
+        font-size: 2rem;
+    }
+    
+    .vmgo-grid,
+    .services-grid,
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-hero {
+        padding: 80px 0 60px;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .vmgo-card,
+    .service-card,
+    .feature-card {
+        padding: 2rem 1.5rem;
     }
 }
 </style>
 
 <script>
-// Initialize any needed scripts
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize AOS animations if needed
+    // Add scroll animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observe elements for animation
+    const animateElements = document.querySelectorAll('.vmgo-card, .service-card, .feature-card');
+    animateElements.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+    });
+
+    // Initialize AOS animations if available
     if (typeof AOS !== 'undefined') {
         AOS.init({
             duration: 800,

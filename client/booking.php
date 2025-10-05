@@ -17,21 +17,21 @@
             o.status,
             o.price,
             o.payment_mode,
-            o.is_assgin, 
+            o.is_assgin,
             s.sub_category,
-            s.service_type,
             u.first_name AS customer_first_name,
             u.last_name AS customer_last_name,
             u.mobile AS customer_mobile,
-            c.city_code,
             c.city_name
         FROM `order` o
         LEFT JOIN user_detail u ON o.user_id = u.user_id
         LEFT JOIN sub_category s ON o.sub_id = s.sub_id
-        LEFT JOIN city c ON o.city_id = c.city_id
+        LEFT JOIN order_detail od ON o.order_id = od.order_id
+        LEFT JOIN city c ON od.city = c.city_id
         WHERE o.user_id = '$user_id'
         ORDER BY o.order_id DESC
     ";
+
 
     $run = mysqli_query($con, $sel) or die("Query Error: " . mysqli_error($con));
 ?>
@@ -63,7 +63,6 @@
                             </div>
                             <div class="service-info">
                                 <h3><?= htmlspecialchars($row['sub_category']) ?></h3>
-                                <p><?= htmlspecialchars($row['service_type']) ?></p>
                             </div>
                         </div>
                         <div class="booking-details">
@@ -127,9 +126,6 @@
                                     // Check if any technician is assigned
                                     if (mysqli_num_rows($run) > 0) {
                                         while ($tech = mysqli_fetch_assoc($run)) {
-
-                                            echo "there.";
-
                                             echo $tech['first_name'] . ' ' . $tech['last_name'] . "<br>";
                                         }
                                     } else {

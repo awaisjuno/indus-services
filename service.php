@@ -16,10 +16,49 @@
 
   $run = mysqli_query($con, $sel);
 
+  // Check if any record found
+  if (!$run || mysqli_num_rows($run) === 0) {
+      echo "<script>alert('No matching category found.'); window.location.href='" . base_url() . "';</script>";
+      exit;
+  }
+
   $row = mysqli_fetch_assoc($run);
 
 ?>
 
+
+<style>
+  .benefits-list {
+    margin: 2rem 0;
+  }
+
+.benefit-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+.benefit-icon {
+    color: #28a745;
+    margin-right: 12px;
+    font-size: 1.3rem;
+}
+.verification-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #28a745;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    animation: pulse 2s infinite;
+}
+</style>
 
 
 <!-- Hero Section -->
@@ -29,33 +68,42 @@
       <div class="col-lg-6">
         <h1 class="display-4 fw-bold mb-4 hero-title"><?= $row['sub_category']?></h1>
         <p class="lead mb-4"><?= $row['description']?></p>
+
+                    <div class="benefits-list">
+                        <div class="benefit-item">
+                            <i class="fas fa-check-circle benefit-icon"></i>
+                            <span>Professional &amp; Experienced Team</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check-circle benefit-icon"></i>
+                            <span>Quality Guaranteed Services</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check-circle benefit-icon"></i>
+                            <span>24/7 Customer Support</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-check-circle benefit-icon"></i>
+                            <span>Flexible Scheduling</span>
+                        </div>
+                    </div>
+
         <div class="row g-3">
             <?php 
                 $cat = strtolower(str_replace(' ', '-', $row['sub_category']));
                 
-                // Check service type and show appropriate button
-                if ($row['service_type'] == 'quotation') {
-                    // Show only "Get Customized Quotes" button for quotation services
-                    echo '
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                        <a href="'.base_url().'options/price/'.$cat.'" class="btn w-100 book-service-btn">Book Service</a>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                        <a href="'.base_url().'options/quotation/'.$cat.'" class="btn w-100 customized-quotes-btn">
-                            Get Customized Quotes
-                        </a>
-                    </div>';
-                } else {
                     // Show both buttons for regular services
                     echo '<div class="col-lg-6 col-md-6 col-sm-6">
-                        <a href="'.base_url().'options/hourly/'.$cat.'" class="btn w-100 book-service-btn">Book Service</a>
+                        <a href="'.base_url().'options/'.$cat.'" class="btn w-100 book-service-btn">Book Service</a>
                     </div>';
-                }
             ?>
         </div>
       </div>
       <div class="col-lg-6">
         <img src="<?= base_url()?>assets/services/<?= $row['img']?>" alt="Professional cleaning team" class="img-fluid rounded-3 shadow-lg hero-image">
+        <div class="verification-badge">
+                        <i class="fas fa-check"></i>
+                    </div>
       </div>
     </div>
   </div>

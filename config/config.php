@@ -1,8 +1,9 @@
 <?php 
 
-    function base_url()
-    {
+    function base_url($path = '') {
+        
         return 'http://localhost/indus/';
+
     }
 
     // Form Helpers
@@ -72,6 +73,70 @@
 
 
 
+    
+// Helper function to get appropriate icons for options
+function get_icon_for_option($option) {
+    $option_lower = strtolower($option);
+    
+    $icon_map = [
+        'repair' => 'fas fa-tools',
+        'install' => 'fas fa-wrench',
+        'removal' => 'fas fa-trash-alt',
+        'clean' => 'fas fa-broom',
+        'maintenance' => 'fas fa-clipboard-check',
+        'inspection' => 'fas fa-search',
+        'delivery' => 'fas fa-truck',
+        'setup' => 'fas fa-cogs',
+        'assembly' => 'fas fa-puzzle-piece',
+        'diagnostic' => 'fas fa-stethoscope',
+        'emergency' => 'fas fa-ambulance',
+        'scheduled' => 'fas fa-calendar-check'
+    ];
+    
+    foreach ($icon_map as $keyword => $icon) {
+        if (strpos($option_lower, $keyword) !== false) {
+            return $icon;
+        }
+    }
+    
+    return 'fas fa-cog'; // default icon
+}
+
+// Helper function for radio button icons
+function get_icon_for_radio($option, $is_yes_no) {
+    if ($is_yes_no) {
+        $option_lower = strtolower($option);
+        if (strpos($option_lower, 'yes') !== false || strpos($option_lower, 'agree') !== false) {
+            return 'fas fa-check-circle';
+        }
+        if (strpos($option_lower, 'no') !== false || strpos($option_lower, 'disagree') !== false) {
+            return 'fas fa-times-circle';
+        }
+    }
+    return 'fas fa-circle';
+}
+
+// Helper function to detect yes/no questions
+function is_yes_no_question($attribute_name) {
+    $question_lower = strtolower($attribute_name);
+    $yes_no_indicators = ['do you', 'are you', 'have you', 'need', 'would you', 'can you', 'will you'];
+    
+    foreach ($yes_no_indicators as $indicator) {
+        if (strpos($question_lower, $indicator) !== false) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Helper function to create safe IDs
+function sanitize_id($text) {
+    return preg_replace('/[^a-zA-Z0-9_-]/', '_', strtolower($text));
+}
+
+
+
+
     //Database Connection
     $con = mysqli_connect('localhost', 'root', '', 'indus');
     
@@ -80,8 +145,7 @@
     }
 
 
-    $user_id = $_SESSION['user_id'];
-
+    $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
     $user = "SELECT * FROM user_detail WHERE user_id='$user_id'";
     $run = mysqli_query($con, $user);
     $row = mysqli_fetch_assoc($run);

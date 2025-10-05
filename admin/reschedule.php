@@ -18,11 +18,6 @@
             </div>
             
             <div class="header-right">
-                <!-- Notification Icon -->
-                <div class="notifications">
-                    <i class="fa-solid fa-bell"></i>
-                    <span class="badge">3</span>
-                </div>
 
                 <!-- User Profile -->
                 <div class="user-profile">

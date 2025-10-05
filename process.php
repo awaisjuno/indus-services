@@ -1,11 +1,19 @@
 <?php
+    ob_start();
     session_start();
     include 'config/config.php';
     include 'config/session.php';
     include 'temp/header.php';
     
     $order_code = $_GET['order'] ?? '';
-    
+
+
+    // Require user to be logged in BEFORE sending any output
+    if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+        header("Location: " . base_url() . "/signin");
+        exit;
+    }
+
     // Process form submission
     if (isset($_POST['submit'])) {
         // Capture values
@@ -429,7 +437,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <input type="email" id="email" name="email" class="form-control" placeholder=" " required>
+                        <input type="email" id="email" name="email" vlaue="<?= $role['email']?>" class="form-control" placeholder=" " required>
                         <label for="email" class="form-label">Email Address</label>
                         <div class="error-message" id="email-error">Please enter a valid email</div>
                     </div>

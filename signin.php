@@ -1,6 +1,7 @@
 <?php 
     session_start();
     include 'config/config.php';
+    include 'config/load-header.php';
     include 'temp/header.php';
 ?>
 
@@ -18,18 +19,19 @@
                 <div class="form-group">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
-                    <a href="forgot_password.php" class="forgot-password">Forgot Password?</a>
+                    <a href="<?= base_url()?>forget-password" class="forgot-password">Forgot Password?</a>
                 </div>
                 
-                <div class="form-group">
-                    <input type="checkbox" id="remember" name="remember">
-                    <label for="remember">Remember me</label>
+                <div class="form-group" 
+                    style="display: inline-flex; align-items: center; gap: 5px; justify-content: flex-start; width: auto;">
+                    <input type="checkbox" id="remember" name="remember" style="width: 30px;">
+                    <label for="remember" style="margin-top: 10px;">Remember me</label>
                 </div>
                 
                 <button type="submit" name="signin" class="btn btn-primary btn-center">Sign In</button>
                 
                 <div class="auth-footer">
-                    <p>Don't have an account? <a href="signup.php">Register here</a></p>
+                    <p>Don't have an account? <a href="signup">Register here</a></p>
                 </div>
             </form>
 
@@ -63,6 +65,10 @@
                                 
                                 echo "<script>window.open('". base_url() ."client/dashboard.php', '_self')</script>";
                                 
+                            } else if($user['role'] == 'super') {
+
+                                echo "<script>window.open('". base_url() ."super/dashboard.php', '_self')</script>";
+
                             }
 
                             //echo "<script>window.location.href='client/dashboard.php';</script>";

@@ -168,3 +168,58 @@
   document.addEventListener('scroll', navmenuScrollspy);
 
 })();
+
+
+
+// Initialize the carousel with autoplay
+document.addEventListener('DOMContentLoaded', function() {
+  const heroCarousel = new bootstrap.Carousel('#heroCarousel', {
+    interval: 5000,
+    ride: 'carousel',
+    wrap: true
+  });
+  
+  // Reinitialize AOS on slide change
+  document.getElementById('heroCarousel').addEventListener('slid.bs.carousel', function() {
+    AOS.refresh();
+  });
+
+  // FAQ toggle functionality
+  const faqItems = document.querySelectorAll('.faq-item h3');
+  faqItems.forEach(item => {
+    item.addEventListener('click', function() {
+      const parent = this.parentElement;
+      parent.classList.toggle('active');
+    });
+  });
+
+  // Initialize PureCounter
+  if (typeof PureCounter !== 'undefined') {
+    new PureCounter();
+  }
+
+  // Contact form submission handling
+  const contactForm = document.querySelector('.php-email-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const loading = this.querySelector('.loading');
+      const error = this.querySelector('.error-message');
+      const sent = this.querySelector('.sent-message');
+      
+      loading.style.display = 'block';
+      error.style.display = 'none';
+      sent.style.display = 'none';
+      
+      // This is where you would normally make an AJAX call
+      // For demo purposes, we'll simulate a successful submission
+      setTimeout(() => {
+        loading.style.display = 'none';
+        sent.style.display = 'block';
+        contactForm.reset();
+      }, 1500);
+    });
+  }
+});
